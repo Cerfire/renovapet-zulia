@@ -1,0 +1,83 @@
+================================================================================
+GUÍA DE INSTALACIÓN Y DESPLIEGUE - RENOVAPET ZULIA
+================================================================================
+
+1. REQUISITOS PREVIOS
+---------------------
+- Node.js instalado (v16 o superior).
+- MySQL Server instalado y ejecutándose.
+
+2. INSTALACIÓN LOCAL
+--------------------
+A. Base de Datos
+   1. Abre tu cliente MySQL (Workbench, HeideSQL, DBeaver, etc.).
+   2. Crea una base de datos nueva llamada `renovapet_db`.
+   3. Ejecuta el script SQL ubicado en `server/database.sql` para crear las tablas y datos iniciales.
+
+B. Backend (Servidor)
+   1. Abre una terminal en la carpeta `/server`.
+   2. Instala dependencias: `npm install`
+   3. Crea un archivo `.env` en `/server` con tus credenciales:
+      DB_HOST=localhost
+      DB_USER=root
+      DB_PASSWORD=tu_contraseña
+      DB_NAME=renovapet_db
+      PORT=5000
+   4. Inicia el servidor: `npm run dev`
+
+C. Frontend (Cliente)
+   1. Abre una NUEVA terminal en la carpeta raíz del proyecto.
+   2. Instala dependencias: `npm install`
+   3. Asegúrate de tener el archivo `.env` en la raíz con:
+      VITE_API_URL=http://localhost:5000
+   4. Inicia la app: `npm run dev`
+   5. Abre http://localhost:5173 en tu navegador.
+
+D. Credenciales de Acceso
+   - Usuario: admin
+   - Clave: 1234
+   - Usuario: vendedor
+   - Clave: 1234
+
+3. DESPLIEGUE EN PRODUCCIÓN (ONLINE)
+------------------------------------
+A. Base de Datos (MySQL Online)
+   - Usa un servicio como Railway, PlanetScale o Aiven (Free tiers disponibles).
+   - Ejecuta el script `server/database.sql` en tu base de datos cloud.
+   - Obtén la URL de conexión o host/user/pass.
+
+B. Backend (Render.com)
+   1. Crea una cuenta en Render.
+   2. Selecciona "New Web Service".
+   3. Conecta tu repositorio de GitHub.
+   4. Configuración:
+      - Root Directory: `server`
+      - Build Command: `npm install`
+      - Start Command: `node server.js`
+   5. Environment Variables (Variables de Entorno):
+      - Añade DB_HOST, DB_USER, DB_PASSWORD, DB_NAME con los datos de tu DB Online.
+
+C. Frontend (Vercel.com)
+   1. Crea una cuenta en Vercel.
+   2. "Add New Project" -> Importa tu repositorio.
+   3. Configuración:
+      - Root Directory: `./` (la raíz).
+      - Build Command: `npm run build`
+      - Output Directory: `dist`
+   4. Environment Variables:
+      - Clave: `VITE_API_URL`
+      - Valor: `https://[TU-URL-DEL-BACKEND-EN-RENDER].onrender.com` (Usa la URL que te dio Render).
+   5. Deploy!
+
+4. VIDEO TUTORIAL
+-----------------
+Para una guía visual paso a paso, consulta:
+[LINK_VIDEO_AQUI]
+
+================================================================================
+NOTAS ADICIONALES
+- PWA: La aplicación es instalable. Al abrirla en el celular desde Vercel,
+  usa la opción "Agregar a Pantalla de Inicio".
+- Offline: Si se pierde la conexión, la app seguirá funcionando en modo lectura
+  gracias a la caché.
+================================================================================

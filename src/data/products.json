@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "name": "Gel Dental Enzimático",
+        "price": 12.00,
+        "description": "Gel dental para el cuidado oral de mascotas. Previene el sarro y el mal aliento.",
+        "stock": 50,
+        "image": "https://placehold.co/400x400?text=Gel+Dental"
+    },
+    {
+        "id": 2,
+        "name": "Spray Anti-Ácaros",
+        "price": 15.50,
+        "description": "Spray eficaz para eliminar ácaros y parásitos externos en perros y gatos.",
+        "stock": 30,
+        "image": "https://placehold.co/400x400?text=Spray+Acaros"
+    },
+    {
+        "id": 3,
+        "name": "Champú Hipoalergénico",
+        "price": 18.00,
+        "description": "Champú suave para pieles sensibles, libre de sulfatos y parabenos.",
+        "stock": 45,
+        "image": "https://placehold.co/400x400?text=Champu"
+    },
+    {
+        "id": 4,
+        "name": "Acondicionador Nutritivo",
+        "price": 14.00,
+        "description": "Deja el pelaje suave y brillante. Ideal para perros de pelo largo.",
+        "stock": 40,
+        "image": "https://placehold.co/400x400?text=Acondicionador"
+    },
+    {
+        "id": 5,
+        "name": "Limpiador de Oídos",
+        "price": 10.50,
+        "description": "Solución para la limpieza regular de oídos, previene infecciones.",
+        "stock": 60,
+        "image": "https://placehold.co/400x400?text=Limpiador+Oidos"
+    },
+    {
+        "id": 6,
+        "name": "Perfume Floral",
+        "price": 8.00,
+        "description": "Fragancia suave y duradera para mantener a tu mascota oliendo bien.",
+        "stock": 100,
+        "image": "https://placehold.co/400x400?text=Perfume"
+    },
+    {
+        "id": 7,
+        "name": "Bálsamo para Patas",
+        "price": 9.50,
+        "description": "Hidrata y protege las almohadillas de las patas contra el frío y el calor.",
+        "stock": 25,
+        "image": "https://placehold.co/400x400?text=Balsamo+Patas"
+    }
+]
