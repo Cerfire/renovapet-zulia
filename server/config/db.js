@@ -11,7 +11,9 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME || 'renovapet_db',
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    // Activa SSL inteligentemente solo cuando no estamos en localhost (requerido por Aiven)
+    ssl: process.env.DB_HOST && process.env.DB_HOST !== 'localhost' ? { rejectUnauthorized: false } : false
 });
 
 module.exports = pool;
