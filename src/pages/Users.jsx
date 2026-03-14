@@ -183,7 +183,7 @@ const Users = () => {
                             </div>
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 mb-1">{currentUser ? 'Nueva Contraseña (Opcional)' : 'Contraseña *'}</label>
-                                <input type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" />
+                                <input required={!currentUser} minLength="4" type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" />
                             </div>
                             <div className="pt-4 flex justify-end gap-3">
                                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2 text-gray-600 hover:bg-gray-100 rounded-xl font-medium transition-colors">Cancelar</button>

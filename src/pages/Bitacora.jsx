@@ -13,6 +13,10 @@ const Bitacora = () => {
     const [actionLoading, setActionLoading] = useState(null);
     const [showDangerZone, setShowDangerZone] = useState(false);
 
+    // Filters
+    const [filterDate, setFilterDate] = useState('');
+    const [filterUser, setFilterUser] = useState('');
+
     // Modal state
     const [showModal, setShowModal] = useState(false);
     const [modalConfig, setModalConfig] = useState(null);
@@ -149,8 +153,28 @@ const Bitacora = () => {
                                 <p className="font-medium text-lg text-gray-400">No hay registros en la bitácora.</p>
                             </div>
                         ) : (
-                            <div className="relative border-l-2 border-brand-green-light/30 ml-5 space-y-10 pb-4">
-                                {logs.map((log, index) => {
+                            <>
+                                <div className="mb-6 flex flex-col sm:flex-row gap-4">
+                                    <input 
+                                        type="date" 
+                                        value={filterDate} 
+                                        onChange={(e) => setFilterDate(e.target.value)} 
+                                        className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-green-light outline-none"
+                                    />
+                                    <input 
+                                        type="text" 
+                                        placeholder="Filtrar por usuario..." 
+                                        value={filterUser} 
+                                        onChange={(e) => setFilterUser(e.target.value)} 
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-brand-green-light outline-none"
+                                    />
+                                </div>
+                                <div className="relative border-l-2 border-brand-green-light/30 ml-5 space-y-10 pb-4">
+                                    {logs.filter(log => {
+                                        const dateMatch = filterDate ? new Date(log.timestamp).toISOString().split('T')[0] === filterDate : true;
+                                        const userMatch = filterUser ? (log.username || 'Sistema').toLowerCase().includes(filterUser.toLowerCase()) : true;
+                                        return dateMatch && userMatch;
+                                    }).map((log, index) => {
                                     // Determinar color e icono por acción
                                     let ActionIcon = Activity;
                                     let bgColor = "bg-gray-100 dark:bg-gray-700";
@@ -210,7 +234,8 @@ const Bitacora = () => {
                                         </motion.div>
                                     );
                                 })}
-                            </div>
+                                </div>
+                            </>
                         )}
                     </div>
                 </motion.div>

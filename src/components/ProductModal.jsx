@@ -181,6 +181,9 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit = null }) => {
                                     step="0.01"
                                     value={formData.price}
                                     onChange={handleChange}
+                                    onKeyDown={(e) => {
+                                        if (['e', 'E', '+', '-'].includes(e.key)) e.preventDefault();
+                                    }}
                                     className={`w-full p-2.5 border rounded-xl focus:ring-2 outline-none text-gray-900 bg-white placeholder-gray-400 ${errors.price ? 'border-red-500 ring-red-200' : 'border-gray-300 focus:ring-brand-green-light/50'}`}
                                 />
                                 {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price}</p>}
@@ -195,6 +198,9 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit = null }) => {
                                     step="1"
                                     value={formData.stock}
                                     onChange={handleChange}
+                                    onKeyDown={(e) => {
+                                        if (['e', 'E', '+', '-', '.'].includes(e.key)) e.preventDefault();
+                                    }}
                                     className={`w-full p-2.5 border rounded-xl focus:ring-2 outline-none text-gray-900 bg-white placeholder-gray-400 ${errors.stock ? 'border-red-500 ring-red-200' : 'border-gray-300 focus:ring-brand-green-light/50'}`}
                                 />
                                 {errors.stock && <p className="text-red-500 text-xs mt-1">{errors.stock}</p>}

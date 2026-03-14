@@ -10,26 +10,14 @@ router.post('/login', async (req, res) => {
     try {
         const [users] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
 
-        // Fallback for testing/demo: Always allow '1234' for admin/vendedor
-        const isFallback = (username === 'admin' || username === 'vendedor') && password === '1234';
-
         if (users.length === 0) {
-            if (isFallback) {
-                // Return mock user for fallback if DB is empty/user missing
-                return res.json({
-                    id: username === 'admin' ? 1 : 2,
-                    username: username,
-                    role: username === 'admin' ? 'Gerente' : 'Vendedor',
-                    avatar: `https://ui-avatars.com/api/?name=${username}&background=random`
-                });
-            }
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
 
         const user = users[0];
         const validPassword = await bcrypt.compare(password, user.password_hash);
 
-        if (!validPassword && !isFallback) {
+        if (!validPassword) {
             return res.status(401).json({ error: 'Credenciales inválidas' });
         }
 
