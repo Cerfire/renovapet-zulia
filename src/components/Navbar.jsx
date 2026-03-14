@@ -32,9 +32,8 @@ const Navbar = () => {
     };
 
     return (
-        <>
-            <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-gray-900/80 border-b border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-gray-900/80 border-b border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <Link to="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
@@ -182,11 +181,42 @@ const Navbar = () => {
 
                 </div>
             </div>
-            </nav>
 
             {/* Mobile Menu (Premium) */}
-            <div className={`md:hidden fixed inset-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className="flex flex-col h-full overflow-y-auto pt-24 pb-6 px-6">
+            <div className={`md:hidden fixed top-16 left-0 right-0 bottom-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                <div className="flex flex-col h-full overflow-y-auto pt-6 pb-24 px-6">
+                    
+                    {/* User Info Card (when logged in) - Moved to TOP */}
+                    {user ? (
+                        <div className="flex items-center gap-3 p-4 mb-6 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                            <img
+                                src={user.avatar}
+                                alt={user.username}
+                                className="w-12 h-12 rounded-full border-2 border-brand-green-light/30 object-cover flex-shrink-0"
+                            />
+                            <div className="flex-1 min-w-0">
+                                <p className="font-bold text-gray-800 dark:text-white truncate">{user.username}</p>
+                                <p className="text-xs text-brand-green-dark dark:text-brand-green-light font-semibold">{user.role}</p>
+                            </div>
+                            <button
+                                onClick={() => { logout(); setIsMenuOpen(false); }}
+                                className="flex items-center gap-1.5 px-3 py-2 bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 rounded-xl font-bold text-sm hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors active:scale-95 flex-shrink-0"
+                                title="Cerrar Sesión"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                <span>Salir</span>
+                            </button>
+                        </div>
+                    ) : (
+                        <Link
+                            to="/login"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="w-full bg-brand-green-dark text-white py-4 mb-6 rounded-xl font-bold text-center shadow-lg shadow-brand-green-dark/30 block hover:bg-opacity-90 transition-all"
+                        >
+                            Iniciar Sesión
+                        </Link>
+                    )}
+
                     {/* Search Bar in Mobile - Functional */}
                     <div className="mb-6 relative">
                         <input
@@ -266,74 +296,36 @@ const Navbar = () => {
                     </div>
 
 
-                    {/* User Info + Quick Controls */}
-                    <div className="mt-auto space-y-3">
+                    {/* Quick Controls Grid */}
+                    <div className="mt-auto grid grid-cols-2 gap-3 pt-4 border-t border-gray-100 dark:border-gray-800">
+                        <button
+                            onClick={toggleTheme}
+                            className="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl gap-2 active:scale-95 transition-transform hover:bg-gray-200 dark:hover:bg-gray-700"
+                        >
+                            {theme === 'dark' ? <Sun className="w-6 h-6 text-orange-400" /> : <Moon className="w-6 h-6 text-indigo-500" />}
+                            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                                {theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}
+                            </span>
+                        </button>
 
-                        {/* User Info Card (when logged in) */}
-                        {user && (
-                            <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700">
-                                <img
-                                    src={user.avatar}
-                                    alt={user.username}
-                                    className="w-12 h-12 rounded-full border-2 border-brand-green-light/30 object-cover flex-shrink-0"
-                                />
-                                <div className="flex-1 min-w-0">
-                                    <p className="font-bold text-gray-800 dark:text-white truncate">{user.username}</p>
-                                    <p className="text-xs text-brand-green-dark dark:text-brand-green-light font-semibold">{user.role}</p>
-                                </div>
-                                <button
-                                    onClick={() => { logout(); setIsMenuOpen(false); }}
-                                    className="flex items-center gap-1.5 px-3 py-2 bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 rounded-xl font-bold text-sm hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors active:scale-95 flex-shrink-0"
-                                    title="Cerrar Sesión"
-                                >
-                                    <LogOut className="w-4 h-4" />
-                                    <span>Salir</span>
-                                </button>
-                            </div>
-                        )}
-
-                        {/* Quick Controls Grid */}
-                        <div className="grid grid-cols-2 gap-3">
-                            <button
-                                onClick={toggleTheme}
-                                className="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl gap-2 active:scale-95 transition-transform"
-                            >
-                                {theme === 'dark' ? <Sun className="w-6 h-6 text-orange-400" /> : <Moon className="w-6 h-6 text-indigo-500" />}
-                                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
-                                    {theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}
-                                </span>
-                            </button>
-
-                            <button
-                                onClick={() => {
-                                    setIsMenuOpen(false);
-                                    toggleCart();
-                                }}
-                                className="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl gap-2 active:scale-95 transition-transform relative"
-                            >
-                                <ShoppingCart className="w-6 h-6 text-brand-green-dark dark:text-brand-green-light" />
-                                <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Carrito</span>
-                                {cart.length > 0 && (
-                                    <span className="absolute top-3 right-3 w-3 h-3 bg-red-500 rounded-full"></span>
-                                )}
-                            </button>
-                        </div>
-
-                        {/* Login button (when NOT logged in) */}
-                        {!user && (
-                            <Link
-                                to="/login"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="mt-2 w-full bg-brand-green-dark text-white py-4 rounded-xl font-bold text-center shadow-lg shadow-brand-green-dark/30 block"
-                            >
-                                Iniciar Sesión
-                            </Link>
-                        )}
+                        <button
+                            onClick={() => {
+                                setIsMenuOpen(false);
+                                toggleCart();
+                            }}
+                            className="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-2xl gap-2 active:scale-95 transition-transform relative hover:bg-gray-200 dark:hover:bg-gray-700"
+                        >
+                            <ShoppingCart className="w-6 h-6 text-brand-green-dark dark:text-brand-green-light" />
+                            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Carrito</span>
+                            {cart.length > 0 && (
+                                <span className="absolute top-3 right-3 w-3 h-3 bg-red-500 rounded-full"></span>
+                            )}
+                        </button>
                     </div>
                 </div>
             </div>
 
-        </>
+        </nav>
     );
 };
 
