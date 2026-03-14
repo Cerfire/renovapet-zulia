@@ -144,13 +144,39 @@ const Navbar = () => {
                         )}
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="md:hidden p-2 text-gray-600 dark:text-gray-300"
-                    >
-                        {isMenuOpen ? <CloseIcon className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                    </button>
+                    {/* Mobile Actions + Menu Button */}
+                    <div className="md:hidden flex items-center gap-1">
+                        {/* Dark Mode Toggle - visible on mobile */}
+                        <button
+                            onClick={toggleTheme}
+                            className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-800 rounded-full transition-colors"
+                            title={theme === 'dark' ? 'Modo Claro' : 'Modo Oscuro'}
+                        >
+                            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                        </button>
+
+                        {/* Cart button on mobile */}
+                        <button
+                            onClick={handleCartClick}
+                            className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-gray-800 rounded-full transition-colors relative"
+                        >
+                            <ShoppingCart className="w-5 h-5" />
+                            {cart.length > 0 && (
+                                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-brand-green-light text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-white dark:border-gray-900">
+                                    {cart.reduce((a, b) => a + b.quantity, 0)}
+                                </span>
+                            )}
+                        </button>
+
+                        {/* Hamburger */}
+                        <button
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                            className="p-2 text-gray-600 dark:text-gray-300"
+                        >
+                            {isMenuOpen ? <CloseIcon className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        </button>
+                    </div>
+
                 </div>
             </div>
 

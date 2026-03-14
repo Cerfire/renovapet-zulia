@@ -19,7 +19,7 @@ const Users = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users`);
             if (res.ok) {
                 const data = await res.json();
                 setUsersList(data);
@@ -43,7 +43,7 @@ const Users = () => {
     const handleDelete = async (id) => {
         if (window.confirm('¿Eliminar este usuario permanentemente?')) {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users/${id}`, { method: 'DELETE' });
                 if (res.ok) {
                     toast.success('Usuario eliminado');
                     fetchUsers();
@@ -70,7 +70,7 @@ const Users = () => {
             return;
         }
 
-        const url = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/users${currentUser ? `/${currentUser.id}` : ''}`;
+        const url = `${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users${currentUser ? `/${currentUser.id}` : ''}`;
         const method = currentUser ? 'PUT' : 'POST';
 
         try {

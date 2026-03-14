@@ -18,7 +18,8 @@ const Entities = () => {
     }, [activeTab]);
 
     const getApiEndpoint = () => {
-        return `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/${activeTab}`;
+        return `${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/${activeTab}`;
+
     };
 
     const fetchData = async () => {

@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldAlert, AlertTriangle, Trash2, Database, Activity, User, Clock, ArrowRight, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
+
 
 const Bitacora = () => {
     const { user } = useAuth();
