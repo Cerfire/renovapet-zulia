@@ -11,7 +11,7 @@ const MainLayout = ({ children }) => {
             </div>
 
             {/* Main Content Area */}
-            <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-24 pb-24 md:pb-8 transition-all duration-300">
+            <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-24 md:pt-24 md:pb-8 transition-all duration-300">
                 <div className="animate-fade-in">
                     {children}
                 </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Search, User, ShoppingCart, Menu, LogOut, Sun, Moon, X as CloseIcon, Activity, Users as UsersIcon, Database } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -7,7 +7,9 @@ import { useCart } from '../context/CartContext';
 const Navbar = () => {
     const { user, logout } = useAuth();
     const { cart, toggleCart } = useCart();
+    const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [mobileSearch, setMobileSearch] = useState('');
 
     // Dark Mode Logic
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
@@ -182,15 +184,33 @@ const Navbar = () => {
 
             {/* Mobile Menu (Premium) */}
             <div className={`md:hidden fixed inset-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className="flex flex-col h-full overflow-y-auto pt-20 pb-6 px-6">
-                    {/* Search Bar in Mobile */}
+                <div className="flex flex-col h-full overflow-y-auto pt-16 pb-6 px-6">
+                    {/* Search Bar in Mobile - Functional */}
                     <div className="mb-6 relative">
                         <input
                             type="text"
-                            placeholder="Buscar en todo el sitio..."
+                            value={mobileSearch}
+                            onChange={e => setMobileSearch(e.target.value)}
+                            onKeyDown={e => {
+                                if (e.key === 'Enter' && mobileSearch.trim()) {
+                                    navigate(`/catalog?q=${encodeURIComponent(mobileSearch.trim())}`);
+                                    setIsMenuOpen(false);
+                                    setMobileSearch('');
+                                }
+                            }}
+                            placeholder="Buscar producto..."
                             className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-800 border-none rounded-xl text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-brand-green-light outline-none"
                         />
-                        <button className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400">
+                        <button
+                            onClick={() => {
+                                if (mobileSearch.trim()) {
+                                    navigate(`/catalog?q=${encodeURIComponent(mobileSearch.trim())}`);
+                                    setIsMenuOpen(false);
+                                    setMobileSearch('');
+                                }
+                            }}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-brand-green-dark transition-colors"
+                        >
                             <Search className="w-5 h-5" />
                         </button>
                     </div>
