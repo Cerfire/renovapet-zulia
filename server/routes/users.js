@@ -13,7 +13,7 @@ const userValidationRules = [
 // GET all users
 router.get('/', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT id, username, role, avatar FROM users');
+        const [rows] = await db.query('SELECT id, username, role, avatar, is_active FROM users');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 // GET single user
 router.get('/:id', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT id, username, role, avatar FROM users WHERE id = ?', [req.params.id]);
+        const [rows] = await db.query('SELECT id, username, role, avatar, is_active FROM users WHERE id = ?', [req.params.id]);
         if (rows.length === 0) return res.status(404).json({ error: 'Usuario no encontrado' });
         res.json(rows[0]);
     } catch (error) {
@@ -95,6 +95,27 @@ router.put('/:id', userValidationRules, async (req, res) => {
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(400).json({ errors: [{ msg: 'El nombre de usuario ya existe' }] });
         }
+        res.status(500).json({ error: 'Error del servidor' });
+    }
+});
+
+// PATCH update user status (suspend/activate)
+router.patch('/:id/status', async (req, res) => {
+    const { is_active } = req.body;
+    
+    // Prevent admin from suspending themselves (for safety)
+    // ID 1 is usually the initial admin. Let's do a basic check.
+    if (req.params.id == 1 && is_active === false) {
+        return res.status(400).json({ error: 'El administrador principal no puede ser suspendido.' });
+    }
+
+    try {
+        const [result] = await db.query('UPDATE users SET is_active = ? WHERE id = ?', [is_active !== false, req.params.id]);
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'Usuario no encontrado' });
+        
+        res.json({ message: 'Estado del usuario actualizado', is_active });
+    } catch (error) {
+        console.error('Error updating user status:', error);
         res.status(500).json({ error: 'Error del servidor' });
     }
 });

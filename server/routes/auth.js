@@ -15,6 +15,11 @@ router.post('/login', async (req, res) => {
         }
 
         const user = users[0];
+
+        if (user.is_active === 0) {
+            return res.status(403).json({ error: 'Usuario suspendido. Contacte al administrador.' });
+        }
+
         const validPassword = await bcrypt.compare(password, user.password_hash);
 
         if (!validPassword) {

@@ -1,8 +1,10 @@
 import React from 'react';
-import { DollarSign, Package, TrendingUp } from 'lucide-react';
+import { DollarSign, Package, TrendingUp, FileText } from 'lucide-react';
 import KPICard from '../components/KPICard';
 import SalesChart from '../components/SalesChart';
 import { motion } from 'framer-motion';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
@@ -48,6 +50,61 @@ const Dashboard = () => {
         }
     };
 
+    const handleGeneratePDF = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(22);
+        doc.setTextColor(0, 102, 68);
+        doc.text('Renovapet Zulia - Reporte Ejecutivo', 14, 22);
+
+        doc.setFontSize(12);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Generado el: ${new Date().toLocaleString()}`, 14, 30);
+        doc.text(`Usuario: ${user?.username || 'Admin'}`, 14, 36);
+
+        doc.setFontSize(14);
+        doc.setTextColor(0, 0, 0);
+        doc.text('Resumen de Métricas (KPIs)', 14, 50);
+
+        doc.autoTable({
+            startY: 55,
+            head: [['Métrica', 'Valor']],
+            body: [
+                ['Ventas Acumuladas', `$${Number(stats.dailySales).toFixed(2)}`],
+                ['Total Items Vendidos', `${stats.itemsSold} unidades`],
+                ['Valor del Inventario', `$${Number(stats.inventoryValue).toFixed(2)}`]
+            ],
+            theme: 'grid',
+            headStyles: { fillColor: [0, 102, 68] }
+        });
+
+        const finalY = doc.lastAutoTable.finalY || 55;
+
+        doc.text('Actividad Reciente (Últimos Pedidos)', 14, finalY + 15);
+
+        const activityBody = stats.recentActivity.slice(0, 15).map(act => [
+             new Date(act.created_at).toLocaleString(),
+             act.client_name || 'Invitado',
+             act.status || 'Completado',
+             `$${Number(act.total).toFixed(2)}`
+        ]);
+
+        if (activityBody.length > 0) {
+            doc.autoTable({
+                startY: finalY + 22,
+                head: [['Fecha', 'Cliente', 'Estado', 'Monto']],
+                body: activityBody,
+                theme: 'striped',
+                headStyles: { fillColor: [40, 40, 40] }
+            });
+        } else {
+            doc.setFontSize(11);
+            doc.text('No hay actividad reciente registrada.', 14, finalY + 22);
+        }
+
+        doc.save(`Reporte_Gerencial_${new Date().toISOString().split('T')[0]}.pdf`);
+        toast.success('Reporte PDF descargado exitosamente');
+    };
+
     return (
         <div className="space-y-8 animate-fade-in pb-20">
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
@@ -57,12 +114,21 @@ const Dashboard = () => {
                 </div>
                 <div className="flex items-center gap-3">
                     {user?.role === 'Gerente' && (
-                        <button
-                            onClick={handleResetSystem}
-                            className="bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-900/30 dark:text-red-400 px-4 py-2 rounded-xl text-sm font-bold transition-colors"
-                        >
-                            ⚠ Reiniciar Historial
-                        </button>
+                        <>
+                            <button
+                                onClick={handleGeneratePDF}
+                                className="flex items-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-4 py-2 rounded-xl text-sm font-bold transition-colors"
+                            >
+                                <FileText className="w-4 h-4" />
+                                Exportar PDF
+                            </button>
+                            <button
+                                onClick={handleResetSystem}
+                                className="bg-red-100 hover:bg-red-200 text-red-700 dark:bg-red-900/30 dark:text-red-400 px-4 py-2 rounded-xl text-sm font-bold transition-colors"
+                            >
+                                ⚠ Reiniciar Historial
+                            </button>
+                        </>
                     )}
                     <span className="bg-brand-green-light/10 text-brand-green-dark dark:text-brand-green-light px-3 py-1 rounded-full text-xs font-semibold">
                         En vivo

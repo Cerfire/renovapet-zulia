@@ -66,16 +66,20 @@ function App() {
                     <Inventory />
                   </MainLayout>
                 } />
+                <Route path="/orders" element={
+                  <MainLayout>
+                    <Orders />
+                  </MainLayout>
+                } />
+              </Route>
+
+              {/* RUTAS ADMINISTRATIVAS - SOLO GERENTE */}
+              <Route element={<ProtectedRoute allowedRoles={['Gerente']} />}>
                 <Route path="/dashboard" element={
                   <MainLayout>
                     <ErrorBoundary>
                       <Dashboard />
                     </ErrorBoundary>
-                  </MainLayout>
-                } />
-                <Route path="/orders" element={
-                  <MainLayout>
-                    <Orders />
                   </MainLayout>
                 } />
                 <Route path="/bitacora" element={
@@ -99,7 +103,6 @@ function App() {
                     </ErrorBoundary>
                   </MainLayout>
                 } />
-                {/* Add more protected routes here later */}
               </Route>
 
               <Route path="*" element={<Navigate to="/" replace />} />

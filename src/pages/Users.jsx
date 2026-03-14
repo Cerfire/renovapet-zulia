@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Search, Plus, Edit2, Trash2, Shield, User as UserIcon } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, Shield, User as UserIcon, Lock, Unlock } from 'lucide-react';
 import { toast } from 'sonner';
 
 const Users = () => {
@@ -57,11 +57,49 @@ const Users = () => {
         }
     };
 
+    const handleToggleStatus = async (userToToggle) => {
+        if (userToToggle.id === 1 && userToToggle.is_active) {
+            toast.error('No puedes suspender al administrador principal.');
+            return;
+        }
+
+        const newStatus = !userToToggle.is_active;
+        const confirmMsg = newStatus 
+            ? `¿Activar cuenta de ${userToToggle.username}?` 
+            : `¿Suspender cuenta de ${userToToggle.username}?`;
+
+        if (window.confirm(confirmMsg)) {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users/${userToToggle.id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ is_active: newStatus })
+                });
+
+                if (res.ok) {
+                    toast.success(`Cuenta ${newStatus ? 'activada' : 'suspendida'} exitosamente`);
+                    fetchUsers();
+                } else {
+                    const data = await res.json();
+                    toast.error(data.error || 'Error al cambiar estado');
+                }
+            } catch (error) {
+                toast.error('Error de conexión');
+            }
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (!formData.username.trim()) {
+        const usernameTrimmed = formData.username.trim();
+        if (!usernameTrimmed) {
             toast.error('El nombre de usuario es obligatorio');
+            return;
+        }
+
+        if (!/^[a-zA-Z0-9_.-]*$/.test(usernameTrimmed)) {
+            toast.error('El usuario solo puede contener letras, números, guiones y puntos (sin espacios).');
             return;
         }
 
@@ -141,16 +179,35 @@ const Users = () => {
                             <img src={u.avatar} alt="avatar" className="w-12 h-12 rounded-full border border-gray-200" />
                             <div>
                                 <h3 className="font-bold text-gray-800">{u.username}</h3>
-                                <span className={`text-xs font-semibold px-2 py-1 rounded-full ${u.role === 'Gerente' ? 'bg-brand-green-light/20 text-brand-green-dark' : 'bg-gray-100 text-gray-600'}`}>
-                                    {u.role}
-                                </span>
+                                <div className="flex items-center gap-2 mt-1">
+                                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${u.role === 'Gerente' ? 'bg-brand-green-light/20 text-brand-green-dark' : 'bg-gray-100 text-gray-600'}`}>
+                                        {u.role}
+                                    </span>
+                                    {u.is_active === 0 ? (
+                                        <span className="text-[10px] font-bold px-2 py-1 bg-red-100 text-red-600 rounded-full flex items-center gap-1">
+                                            <Lock className="w-3 h-3" /> Suspendido
+                                        </span>
+                                    ) : (
+                                        <span className="text-[10px] font-bold px-2 py-1 bg-green-100 text-green-600 rounded-full flex items-center gap-1">
+                                            <Unlock className="w-3 h-3" /> Activo
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <div className="flex gap-2">
-                            <button onClick={() => handleOpenModal(u)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                            <button 
+                                onClick={() => handleToggleStatus(u)} 
+                                disabled={u.id === user.id || (u.id === 1 && u.is_active)}
+                                className={`p-2 rounded-lg transition-colors disabled:opacity-30 ${u.is_active === 0 ? 'text-green-600 hover:bg-green-50' : 'text-orange-500 hover:bg-orange-50'}`}
+                                title={u.is_active === 0 ? "Activar cuenta" : "Suspender cuenta"}
+                            >
+                                {u.is_active === 0 ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
+                            </button>
+                            <button onClick={() => handleOpenModal(u)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Editar">
                                 <Edit2 className="w-4 h-4" />
                             </button>
-                            <button onClick={() => handleDelete(u.id)} disabled={u.id === user.id} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50">
+                            <button onClick={() => handleDelete(u.id)} disabled={u.id === user.id || u.id === 1} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30" title="Eliminar">
                                 <Trash2 className="w-4 h-4" />
                             </button>
                         </div>

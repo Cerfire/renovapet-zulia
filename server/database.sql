@@ -5,7 +5,8 @@ CREATE TABLE users (
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     role ENUM('Gerente', 'Vendedor') NOT NULL,
-    avatar VARCHAR(255)
+    avatar VARCHAR(255),
+    is_active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE categories (

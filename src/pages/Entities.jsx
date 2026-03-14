@@ -68,7 +68,7 @@ const Entities = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         const url = `${getApiEndpoint()}${currentItem ? `/${currentItem.id}` : ''}`;
         const method = currentItem ? 'PUT' : 'POST';
 
@@ -121,11 +121,11 @@ const Entities = () => {
                 <>
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-1">Nombre *</label>
-                        <input required type="text" value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" />
+                        <input required type="text" value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" />
                     </div>
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-1">Descripción</label>
-                        <textarea value={formData.description || ''} onChange={e => setFormData({...formData, description: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" rows="3"></textarea>
+                        <textarea value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" rows="3"></textarea>
                     </div>
                 </>
             );
@@ -133,13 +133,13 @@ const Entities = () => {
         if (activeTab === 'suppliers') {
             return (
                 <>
-                    <div><label className="block text-sm font-semibold text-gray-700 mb-1">Empresa / Nombre *</label><input required type="text" value={formData.name || ''} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
-                    <div><label className="block text-sm font-semibold text-gray-700 mb-1">Contacto</label><input type="text" value={formData.contact_name || ''} onChange={e => setFormData({...formData, contact_name: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-1">Empresa / Nombre *</label><input required type="text" value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-1">Contacto</label><input type="text" value={formData.contact_name || ''} onChange={e => setFormData({ ...formData, contact_name: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
                     <div className="grid grid-cols-2 gap-4">
-                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label><input type="tel" value={formData.phone || ''} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
-                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Email</label><input type="email" value={formData.email || ''} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label><input type="tel" value={formData.phone || ''} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Email</label><input type="email" value={formData.email || ''} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
                     </div>
-                    <div><label className="block text-sm font-semibold text-gray-700 mb-1">Dirección</label><input type="text" value={formData.address || ''} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-1">Dirección</label><input type="text" value={formData.address || ''} onChange={e => setFormData({ ...formData, address: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
                 </>
             );
         }
@@ -147,14 +147,14 @@ const Entities = () => {
             return (
                 <>
                     <div className="grid grid-cols-2 gap-4">
-                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Nombre *</label><input required type="text" value={formData.first_name || ''} onChange={e => setFormData({...formData, first_name: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
-                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Apellido *</label><input required type="text" value={formData.last_name || ''} onChange={e => setFormData({...formData, last_name: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Nombre *</label><input required type="text" value={formData.first_name || ''} onChange={e => setFormData({ ...formData, first_name: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Apellido *</label><input required type="text" value={formData.last_name || ''} onChange={e => setFormData({ ...formData, last_name: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label><input type="tel" value={formData.phone || ''} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
-                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Email</label><input type="email" value={formData.email || ''} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Teléfono</label><input type="tel" value={formData.phone || ''} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                        <div><label className="block text-sm font-semibold text-gray-700 mb-1">Email</label><input type="email" value={formData.email || ''} onChange={e => setFormData({ ...formData, email: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
                     </div>
-                    <div><label className="block text-sm font-semibold text-gray-700 mb-1">Dirección</label><input type="text" value={formData.address || ''} onChange={e => setFormData({...formData, address: e.target.value})} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
+                    <div><label className="block text-sm font-semibold text-gray-700 mb-1">Dirección</label><input type="text" value={formData.address || ''} onChange={e => setFormData({ ...formData, address: e.target.value })} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none" /></div>
                 </>
             );
         }
@@ -168,28 +168,27 @@ const Entities = () => {
                     <p className="text-gray-500 text-sm">Administra las entidades principales del sistema.</p>
                 </div>
 
-                <div className="flex overflow-x-auto bg-gray-100 p-1 rounded-xl w-full md:w-auto no-scrollbar">
+                <div className="flex bg-gray-100 p-1 rounded-xl">
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-2 px-3 sm:px-4 py-2 mx-1 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${
-                                activeTab === tab.id 
-                                ? 'bg-white text-brand-green-dark shadow-sm' 
-                                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
-                            }`}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${activeTab === tab.id
+                                    ? 'bg-white text-brand-green-dark shadow-sm'
+                                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
+                                }`}
                         >
                             {tab.icon}
-                            <span>{tab.label}</span>
+                            <span className="hidden sm:inline">{tab.label}</span>
                         </button>
                     ))}
                 </div>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between gap-4 items-center bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-                 <div className="relative w-full md:w-96">
+                <div className="relative w-full md:w-96">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input type="text" placeholder={`Buscar en ${tabs.find(t=>t.id===activeTab).label.toLowerCase()}...`} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-green-light/20 outline-none w-full" />
+                    <input type="text" placeholder={`Buscar en ${tabs.find(t => t.id === activeTab).label.toLowerCase()}...`} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-green-light/20 outline-none w-full" />
                 </div>
                 <button onClick={() => handleOpenModal()} className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-2 bg-brand-green-dark text-white rounded-xl shadow-md hover:bg-opacity-90 transition-colors font-medium">
                     <Plus className="w-4 h-4" /> Nuevo Registro

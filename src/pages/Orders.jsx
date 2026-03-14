@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Printer, Check, Clock, Package, Download, Edit2, X, Save } from 'lucide-react';
+import { Printer, Check, Clock, Package, Download, Edit2, X, Save, FileText } from 'lucide-react';
 import { toast } from 'sonner';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const OrderEditModal = ({ order, isOpen, onClose, onSave }) => {
     if (!isOpen || !order) return null;
@@ -265,6 +267,48 @@ const Orders = () => {
         toast.success('Pedidos exportados en formato Excel');
     };
 
+    const generatePDF = (order) => {
+        const doc = new jsPDF();
+        
+        doc.setFontSize(20);
+        doc.setTextColor(0, 102, 68); // Brand green
+        doc.text('Renovapet Zulia', 14, 22);
+        
+        doc.setFontSize(14);
+        doc.setTextColor(0, 0, 0);
+        doc.text(`Recibo de Orden #${order.id}`, 14, 32);
+        
+        doc.setFontSize(10);
+        doc.text(`Fecha: ${new Date(order.created_at).toLocaleString()}`, 14, 42);
+        doc.text(`Cliente: ${order.client_name}`, 14, 48);
+        doc.text(`Estado: ${order.status}`, 14, 54);
+        doc.text(`Atendido por: ${order.username || 'Invitado'}`, 14, 60);
+
+        let dispatchInfo = { direccion: 'N/A', telefono: 'N/A', metodo_pago: 'N/A' };
+        try {
+            if (order.dispatch_info) {
+                dispatchInfo = typeof order.dispatch_info === 'string' ? JSON.parse(order.dispatch_info) : order.dispatch_info;
+            }
+        } catch (e) {}
+
+        doc.text(`Teléfono: ${dispatchInfo.telefono || 'N/A'}`, 14, 66);
+        doc.text(`Dirección: ${dispatchInfo.direccion || 'N/A'}`, 14, 72);
+        doc.text(`Método de Pago: ${dispatchInfo.metodo_pago || 'N/A'}`, 14, 78);
+        
+        doc.autoTable({
+            startY: 85,
+            head: [['Descripción', 'Monto']],
+            body: [
+                ['Total General de la Orden', `$${parseFloat(order.total).toFixed(2)}`]
+            ],
+            theme: 'grid',
+            headStyles: { fillColor: [0, 102, 68] }
+        });
+
+        doc.save(`Recibo_Orden_${order.id}.pdf`);
+        toast.success('Recibo PDF generado con éxito');
+    };
+
     const filteredOrders = orders.filter(order => order.status === activeTab);
 
     if (loading) {
@@ -370,6 +414,13 @@ const Orders = () => {
                                         </td>
                                         <td className="p-4 text-right print:hidden">
                                             <div className="flex justify-end gap-2">
+                                                <button
+                                                    onClick={() => generatePDF(order)}
+                                                    className="p-2 text-brand-green-dark hover:bg-brand-green-light/20 rounded-lg transition-colors"
+                                                    title="Descargar Recibo PDF"
+                                                >
+                                                    <FileText className="w-4 h-4" />
+                                                </button>
                                                 <button
                                                     onClick={() => handleEditClick(order)}
                                                     className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"

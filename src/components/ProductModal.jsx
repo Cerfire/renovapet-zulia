@@ -60,7 +60,12 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit = null }) => {
 
     const validate = () => {
         const newErrors = {};
-        if (!formData.name.trim()) newErrors.name = 'El nombre es obligatorio';
+        if (!formData.name.trim()) {
+            newErrors.name = 'El nombre es obligatorio';
+        } else if (!/^[a-zA-Z0-9\s.,\-ñÑáéíóúÁÉÍÓÚ]*$/.test(formData.name)) {
+            newErrors.name = 'El nombre contiene caracteres no válidos';
+        }
+
         if (!formData.description.trim()) newErrors.description = 'La descripción es obligatoria';
 
         const price = parseFloat(formData.price);
