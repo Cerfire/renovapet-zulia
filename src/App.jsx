@@ -14,6 +14,8 @@ import Dashboard from './pages/Dashboard';
 import Orders from './pages/Orders';
 import Bitacora from './pages/Bitacora';
 import WhatsAppFloat from './components/WhatsAppFloat';
+import Users from './pages/Users';
+import Entities from './pages/Entities';
 
 import { Toaster } from 'sonner';
 import CartDrawer from './components/CartDrawer';
@@ -80,6 +82,20 @@ function App() {
                   <MainLayout>
                     <ErrorBoundary>
                       <Bitacora />
+                    </ErrorBoundary>
+                  </MainLayout>
+                } />
+                <Route path="/users" element={
+                  <MainLayout>
+                    <ErrorBoundary>
+                      <Users />
+                    </ErrorBoundary>
+                  </MainLayout>
+                } />
+                <Route path="/entities" element={
+                  <MainLayout>
+                    <ErrorBoundary>
+                      <Entities />
                     </ErrorBoundary>
                   </MainLayout>
                 } />

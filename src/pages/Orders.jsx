@@ -63,6 +63,7 @@ const OrderEditModal = ({ order, isOpen, onClose, onSave }) => {
                         <input
                             type="text"
                             name="client_name"
+                            required
                             value={formData.client_name}
                             onChange={handleChange}
                             className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-green-light outline-none text-gray-900 dark:text-white"
@@ -74,6 +75,9 @@ const OrderEditModal = ({ order, isOpen, onClose, onSave }) => {
                             <input
                                 type="number"
                                 name="total"
+                                required
+                                min="0.01"
+                                step="0.01"
                                 value={formData.total}
                                 onChange={handleChange}
                                 className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-green-light outline-none text-gray-900 dark:text-white"
@@ -99,6 +103,7 @@ const OrderEditModal = ({ order, isOpen, onClose, onSave }) => {
                             <input
                                 type="text"
                                 name="dispatch_direccion"
+                                required
                                 value={formData.dispatch_info.direccion || ''}
                                 onChange={handleChange}
                                 className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-green-light outline-none text-gray-900 dark:text-white"
@@ -110,6 +115,7 @@ const OrderEditModal = ({ order, isOpen, onClose, onSave }) => {
                                 <input
                                     type="text"
                                     name="dispatch_telefono"
+                                    required
                                     value={formData.dispatch_info.telefono || ''}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-brand-green-light outline-none text-gray-900 dark:text-white"

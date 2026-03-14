@@ -1,0 +1,22 @@
+Proyecto: Renovapet Zulia (Tienda de Mascotas PWA)
+Módulo: III (Programación Back-End)
+Participante: (Tu Nombre Aquí / Equipo de Trabajo)
+Actividad: 1 - Desarrollo de Base de Datos y CRUD (Conexiones Backend)
+
+Enlace del Repositorio (GitHub): https://github.com/Cerfire/renovapet-zulia
+Enlace de Despliegue en Vivo (Vercel): [En Vercel - Añadir una vez desplegado]
+Enlace de Video Defensa (YouTube): [Enlace a YouTube]
+
+Credenciales de Administrador para revisión interactiva:
+Usuario: admin
+Contraseña: password123
+
+Credenciales de Vendedor VIP:
+Usuario: vendedor
+Contraseña: password123
+
+Detalles del Desarrollo:
+- Se implementaron 8 Tablas relacionadas.
+- Backend en Node.js (Express) para el CRUD a una base MySQL Cloud.
+- Todas las operaciones CRUD listadas en React.js (Inventario, Órdenes, Personal, Registros Maestros).
+- Enfoque total en validaciones extremas para prevenir caídas de aplicación y tipos de datos erróneos.

@@ -161,6 +161,7 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit = null }) => {
                             <input
                                 type="text"
                                 name="name"
+                                required
                                 value={formData.name}
                                 onChange={handleChange}
                                 className={`w-full p-2.5 border rounded-xl focus:ring-2 outline-none transition-all text-gray-900 bg-white placeholder-gray-400 ${errors.name ? 'border-red-500 ring-red-200' : 'border-gray-300 focus:ring-brand-green-light/50 focus:border-brand-green-light'}`}
@@ -175,9 +176,11 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit = null }) => {
                                 <input
                                     type="number"
                                     name="price"
+                                    required
+                                    min="0.01"
+                                    step="0.01"
                                     value={formData.price}
                                     onChange={handleChange}
-                                    step="0.01"
                                     className={`w-full p-2.5 border rounded-xl focus:ring-2 outline-none text-gray-900 bg-white placeholder-gray-400 ${errors.price ? 'border-red-500 ring-red-200' : 'border-gray-300 focus:ring-brand-green-light/50'}`}
                                 />
                                 {errors.price && <p className="text-red-500 text-xs mt-1">{errors.price}</p>}
@@ -187,6 +190,9 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit = null }) => {
                                 <input
                                     type="number"
                                     name="stock"
+                                    required
+                                    min="0"
+                                    step="1"
                                     value={formData.stock}
                                     onChange={handleChange}
                                     className={`w-full p-2.5 border rounded-xl focus:ring-2 outline-none text-gray-900 bg-white placeholder-gray-400 ${errors.stock ? 'border-red-500 ring-red-200' : 'border-gray-300 focus:ring-brand-green-light/50'}`}
@@ -199,6 +205,7 @@ const ProductModal = ({ isOpen, onClose, onSave, productToEdit = null }) => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
                             <textarea
                                 name="description"
+                                required
                                 value={formData.description}
                                 onChange={handleChange}
                                 rows="3"

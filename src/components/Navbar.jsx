@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, User, ShoppingCart, Menu, LogOut, Sun, Moon, X as CloseIcon, Activity } from 'lucide-react';
+import { Search, User, ShoppingCart, Menu, LogOut, Sun, Moon, X as CloseIcon, Activity, Users as UsersIcon, Database } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
@@ -61,12 +61,29 @@ const Navbar = () => {
                             </Link>
                         ))}
                         {user?.role === 'Gerente' && (
-                            <Link
-                                to="/bitacora"
-                                className="relative font-bold text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-red-600 dark:after:bg-red-400 after:left-0 after:-bottom-1 after:transition-all hover:after:w-full flex items-center gap-1"
-                            >
-                                <Activity className="w-4 h-4" /> Bitácora
-                            </Link>
+                            <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
+                                <Link
+                                    to="/users"
+                                    className="relative font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex items-center gap-1 text-sm"
+                                    title="Gestión de Personal"
+                                >
+                                    <UsersIcon className="w-4 h-4" /> Personal
+                                </Link>
+                                <Link
+                                    to="/entities"
+                                    className="relative font-bold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors flex items-center gap-1 text-sm"
+                                    title="Registros Maestros"
+                                >
+                                    <Database className="w-4 h-4" /> Registros
+                                </Link>
+                                <Link
+                                    to="/bitacora"
+                                    className="relative font-bold text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors flex items-center gap-1 text-sm"
+                                    title="Bitácora de Auditoría"
+                                >
+                                    <Activity className="w-4 h-4" /> Bitácora
+                                </Link>
+                            </div>
                         )}
                     </div>
 
@@ -171,17 +188,32 @@ const Navbar = () => {
                             </Link>
                         ))}
                         {user?.role === 'Gerente' && (
-                            <Link
-                                to="/bitacora"
-                                onClick={() => setIsMenuOpen(false)}
-                                className="flex items-center justify-between p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 font-bold transition-all border border-red-100 dark:border-red-900/30"
-                            >
-                                <div className="flex items-center gap-2">
-                                    <Activity className="w-5 h-5" />
-                                    Bitácora
-                                </div>
-                                <span className="text-red-400">→</span>
-                            </Link>
+                            <div className="space-y-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                <Link
+                                    to="/users"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="flex items-center justify-between p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 text-blue-600 dark:text-blue-400 font-bold transition-all border border-blue-100 dark:border-blue-900/30"
+                                >
+                                    <div className="flex items-center gap-2"><UsersIcon className="w-5 h-5" /> Personal</div>
+                                    <span className="text-blue-400">→</span>
+                                </Link>
+                                <Link
+                                    to="/entities"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="flex items-center justify-between p-4 rounded-xl bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/40 text-purple-600 dark:text-purple-400 font-bold transition-all border border-purple-100 dark:border-purple-900/30"
+                                >
+                                    <div className="flex items-center gap-2"><Database className="w-5 h-5" /> Registros</div>
+                                    <span className="text-purple-400">→</span>
+                                </Link>
+                                <Link
+                                    to="/bitacora"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="flex items-center justify-between p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/40 text-red-600 dark:text-red-400 font-bold transition-all border border-red-100 dark:border-red-900/30"
+                                >
+                                    <div className="flex items-center gap-2"><Activity className="w-5 h-5" /> Bitácora</div>
+                                    <span className="text-red-400">→</span>
+                                </Link>
+                            </div>
                         )}
                     </div>
 

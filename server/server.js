@@ -26,12 +26,20 @@ const ordersRoutes = require('./routes/orders');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard'); // Import
 const auditRoutes = require('./routes/audit');
+const usersRoutes = require('./routes/users');
+const categoriesRoutes = require('./routes/categories');
+const suppliersRoutes = require('./routes/suppliers');
+const customersRoutes = require('./routes/customers');
 
 app.use('/api/products', productsRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes); // Use
 app.use('/api/audit', auditRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/categories', categoriesRoutes);
+app.use('/api/suppliers', suppliersRoutes);
+app.use('/api/customers', customersRoutes);
 
 // Admin: Reset Data Endpoint
 app.delete('/api/admin/reset', async (req, res) => {
@@ -71,3 +79,5 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = app; // Export for Vercel serverless functions

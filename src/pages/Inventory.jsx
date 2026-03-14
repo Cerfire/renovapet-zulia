@@ -74,8 +74,8 @@ const Inventory = () => {
         <div className="space-y-6 animate-fade-in pb-20 relative min-h-screen">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Gestión de Inventario</h1>
-                    <p className="text-gray-500 text-sm">Control de productos y stock.</p>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Gestión de Inventario</h1>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">Control de productos y stock.</p>
                 </div>
 
                 <div className="flex gap-3 w-full md:w-auto items-center">
@@ -86,22 +86,22 @@ const Inventory = () => {
                             placeholder="Buscar..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-green-light/20 outline-none w-full"
+                            className="pl-9 pr-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-brand-green-light/20 outline-none w-full text-gray-900 dark:text-white"
                         />
                     </div>
 
                     {/* View Toggle */}
-                    <div className="flex bg-white border border-gray-200 rounded-xl p-1 shadow-sm">
+                    <div className="flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-1 shadow-sm">
                         <button
                             onClick={() => setViewMode('grid')}
-                            className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-gray-100 text-brand-green-dark' : 'text-gray-400 hover:text-gray-600'}`}
+                            className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-gray-100 dark:bg-gray-700 text-brand-green-dark dark:text-brand-green-light' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
                             title="Vista de Cuadrícula"
                         >
                             <LayoutGrid className="w-4 h-4" />
                         </button>
                         <button
                             onClick={() => setViewMode('list')}
-                            className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-gray-100 text-brand-green-dark' : 'text-gray-400 hover:text-gray-600'}`}
+                            className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-gray-100 dark:bg-gray-700 text-brand-green-dark dark:text-brand-green-light' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'}`}
                             title="Vista de Lista"
                         >
                             <ListIcon className="w-4 h-4" />
@@ -110,7 +110,7 @@ const Inventory = () => {
 
                     <button
                         onClick={exportToCSV}
-                        className="p-2.5 bg-white border border-gray-200 text-gray-600 rounded-xl shadow-sm hover:bg-gray-50 transition-colors"
+                        className="p-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                         title="Exportar CSV"
                     >
                         <Download className="w-4 h-4" />
@@ -139,7 +139,7 @@ const Inventory = () => {
                     {viewMode === 'grid' ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
                             {filteredProducts.map(product => (
-                                <div key={product.id} className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col gap-3 group relative hover:shadow-md transition-shadow">
+                                <div key={product.id} className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col gap-3 group relative hover:shadow-md transition-shadow">
 
                                     {/* Admin Actions Overlay (Visible on Hover/Focus for Managers) */}
                                     {isManager && (
@@ -158,7 +158,7 @@ const Inventory = () => {
                                             <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="font-semibold text-gray-800 truncate">{product.name}</h3>
+                                            <h3 className="font-semibold text-gray-800 dark:text-white truncate">{product.name}</h3>
                                             <p className="text-brand-green-dark font-bold text-sm">${Number(product.price).toFixed(2)}</p>
                                             <p className="text-xs text-gray-400 truncate mt-1">{product.description}</p>
                                         </div>
@@ -175,10 +175,10 @@ const Inventory = () => {
                             ))}
                         </div>
                     ) : (
-                        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden animate-fade-in">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden animate-fade-in">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse">
-                                    <thead className="bg-gray-50 border-b border-gray-100">
+                                    <thead className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-100 dark:border-gray-700">
                                         <tr>
                                             <th className="p-4 font-semibold text-gray-600 text-sm w-16">Img</th>
                                             <th className="p-4 font-semibold text-gray-600 text-sm">Producto</th>
@@ -187,7 +187,7 @@ const Inventory = () => {
                                             {isManager && <th className="p-4 font-semibold text-gray-600 text-sm text-right w-24">Acciones</th>}
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-50">
+                                    <tbody className="divide-y divide-gray-50 dark:divide-gray-700">
                                         {filteredProducts.map(product => (
                                             <tr key={product.id} className="hover:bg-gray-50/50 transition-colors">
                                                 <td className="p-3">
@@ -196,7 +196,7 @@ const Inventory = () => {
                                                     </div>
                                                 </td>
                                                 <td className="p-3">
-                                                    <div className="font-medium text-gray-800">{product.name}</div>
+                                                    <div className="font-medium text-gray-800 dark:text-white">{product.name}</div>
                                                     <div className="text-xs text-gray-400 truncate max-w-[200px] hidden sm:block">{product.description}</div>
                                                 </td>
                                                 <td className="p-3 text-right font-bold text-brand-green-dark">
