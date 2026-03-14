@@ -32,8 +32,9 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-gray-900/80 border-b border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <>
+            <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-gray-900/80 border-b border-gray-100 dark:border-gray-800 shadow-sm transition-all duration-300">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
                     <Link to="/" className="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
@@ -181,10 +182,11 @@ const Navbar = () => {
 
                 </div>
             </div>
+            </nav>
 
             {/* Mobile Menu (Premium) */}
             <div className={`md:hidden fixed inset-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl transform transition-transform duration-300 ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-                <div className="flex flex-col h-full overflow-y-auto pt-16 pb-6 px-6">
+                <div className="flex flex-col h-full overflow-y-auto pt-24 pb-6 px-6">
                     {/* Search Bar in Mobile - Functional */}
                     <div className="mb-6 relative">
                         <input
@@ -331,7 +333,7 @@ const Navbar = () => {
                 </div>
             </div>
 
-        </nav>
+        </>
     );
 };
 

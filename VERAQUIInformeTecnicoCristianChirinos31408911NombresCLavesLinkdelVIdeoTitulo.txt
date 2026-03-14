@@ -1,9 +1,0 @@
-Nombre y Apellido: Cristian Ernesto Chirinos Flores
-
-Cédula: 31.408.911
-
-Título del Proyecto: Sistema Web para la gestión de inventario y ventas en un distribuidor de productos de higiene veterinaria
-
-Credenciales de Acceso: Admin: admin / 1234 y Vendedor: vendedor / 1234
-
-Enlace del Video: https://drive.google.com/file/d/1JWDytCNu-gn4xjnC_UPHUpKa5tEXIDjv/view?usp=sharing

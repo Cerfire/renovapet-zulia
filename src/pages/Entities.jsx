@@ -168,19 +168,19 @@ const Entities = () => {
                     <p className="text-gray-500 text-sm">Administra las entidades principales del sistema.</p>
                 </div>
 
-                <div className="flex bg-gray-100 p-1 rounded-xl">
+                <div className="flex overflow-x-auto bg-gray-100 p-1 rounded-xl w-full md:w-auto no-scrollbar">
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                            className={`flex items-center gap-2 px-3 sm:px-4 py-2 mx-1 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${
                                 activeTab === tab.id 
                                 ? 'bg-white text-brand-green-dark shadow-sm' 
                                 : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
                             }`}
                         >
                             {tab.icon}
-                            <span className="hidden sm:inline">{tab.label}</span>
+                            <span>{tab.label}</span>
                         </button>
                     ))}
                 </div>
