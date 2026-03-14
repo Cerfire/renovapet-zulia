@@ -13,9 +13,11 @@ const Entities = () => {
     const [formData, setFormData] = useState({});
 
     useEffect(() => {
+        setData([]); // Reset data first to avoid stale data crash during filter
         fetchData();
         setSearchTerm('');
     }, [activeTab]);
+
 
     const getApiEndpoint = () => {
         return `${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/${activeTab}`;
@@ -96,11 +98,12 @@ const Entities = () => {
     };
 
     const filteredData = data.filter(item => {
-        const searchStr = activeTab === 'customers' 
-            ? `${item.first_name} ${item.last_name}`.toLowerCase()
-            : item.name.toLowerCase();
+        const searchStr = activeTab === 'customers'
+            ? `${item.first_name || ''} ${item.last_name || ''}`.toLowerCase()
+            : (item.name || '').toLowerCase();
         return searchStr.includes(searchTerm.toLowerCase());
     });
+
 
     if (user?.role !== 'Gerente') {
         return <div className="p-8 text-center text-red-500 font-bold">Acceso Denegado</div>;
