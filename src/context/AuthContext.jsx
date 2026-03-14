@@ -22,8 +22,8 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    // Usa import.meta.env si existe, sino detecta dinámicamente si es localhost o una IP de red local
-    const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`);
+    // En desarrollo (localhost) usa el puerto 5000, en producción (Vercel) usa rutas relativas ('')
+    const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
     const login = async (username, password) => {
         try {

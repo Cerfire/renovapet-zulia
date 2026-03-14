@@ -100,7 +100,7 @@ export const CartProvider = ({ children }) => {
             }
         };
 
-        const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`);
+        const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
 
         try {
             const response = await fetch(`${API_URL}/api/orders`, {

@@ -16,8 +16,7 @@ export const ProductProvider = ({ children }) => {
         return stored ? JSON.parse(stored).id : null;
     };
 
-    // Initial Fetch: API -> LocalStorage -> JSON
-    const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`);
+    const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '');
     console.log("Using API URL:", API_URL);
 
     const fetchProducts = async () => {
