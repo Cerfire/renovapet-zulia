@@ -132,7 +132,7 @@ export const CartProvider = ({ children }) => {
     };
 
     const generateWhatsAppLink = () => {
-        const phoneNumber = "584120000000";
+        const phoneNumber = "584124383334";
         let message = "¡Hola Renovapet Zulia! 🐾 Mi pedido es:%0A%0A";
 
         cart.forEach(item => {

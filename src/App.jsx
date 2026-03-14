@@ -16,6 +16,7 @@ import Bitacora from './pages/Bitacora';
 import WhatsAppFloat from './components/WhatsAppFloat';
 import Users from './pages/Users';
 import Entities from './pages/Entities';
+import ClientCatalog from './pages/ClientCatalog';
 
 import { Toaster } from 'sonner';
 import CartDrawer from './components/CartDrawer';
@@ -47,6 +48,7 @@ function App() {
             <CartDrawer />
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/tienda" element={<ClientCatalog />} />
 
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={
