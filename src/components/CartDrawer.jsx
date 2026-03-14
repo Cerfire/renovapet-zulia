@@ -1,7 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 import Image from './Image';
 
@@ -14,8 +16,13 @@ const CartDrawer = () => {
         removeFromCart,
         updateQuantity,
         clearCart,
-        generateWhatsAppLink
+        generateWhatsAppLink,
+        checkout
     } = useCart();
+
+    const { user } = useAuth();
+    const [clientName, setClientName] = useState('');
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
 
     const drawerRef = useRef(null);
 
@@ -36,43 +43,76 @@ const CartDrawer = () => {
         };
     }, [isCartOpen, closeCart]);
 
-    const handleCheckout = () => {
-        // Trigger Confetti
-        const end = Date.now() + 1000;
-        const colors = ['#006644', '#FF5F1F', '#ffffff'];
+    const handleCheckout = async () => {
+        if (cart.length === 0) {
+            toast.error("El carrito está vacío.");
+            return;
+        }
 
-        (function frame() {
-            confetti({
-                particleCount: 3,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: colors,
-                shapes: ['circle', 'square'] // Simple shapes for now, custom SVG needs more setup
-            });
-            confetti({
-                particleCount: 3,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: colors,
-                shapes: ['circle', 'square']
-            });
+        if (!clientName.trim()) {
+            toast.error("Por favor, ingresa el nombre del cliente antes de procesar.");
+            return;
+        }
 
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
+        setIsCheckingOut(true);
+
+        try {
+            // Send order to backend
+            const result = await checkout({ 
+                name: clientName, 
+                address: "", 
+                phone: "", 
+                paymentMethod: "" 
+            }, user?.id || null);
+
+            if (result.error) {
+                // If the error was explicitly thrown by the backend, it's caught inside checkout(), but returned as object
+                toast.error(result.error);
+                setIsCheckingOut(false);
+                return;
             }
-        }());
 
-        // Open WhatsApp
-        window.open(generateWhatsAppLink(), '_blank');
+            // Trigger Confetti
+            const end = Date.now() + 1000;
+            const colors = ['#006644', '#FF5F1F', '#ffffff'];
 
-        // Close after a moment and clear (optional, maybe wait for user to confirm?)
-        // For now, let's keep it open or close it? Prompt says "Feedback de Éxito: Al enviar, limpia el carrito"
-        setTimeout(() => {
-            clearCart();
-            closeCart();
-        }, 1500);
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors,
+                    shapes: ['circle', 'square'] 
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors,
+                    shapes: ['circle', 'square']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // Open WhatsApp
+            window.open(generateWhatsAppLink(), '_blank');
+
+            setTimeout(() => {
+                setClientName('');
+                closeCart();
+            }, 1500);
+
+        } catch (error) {
+            console.error("Error during checkout:", error);
+            toast.error("Hubo un problema al procesar la orden.");
+        } finally {
+            setIsCheckingOut(false);
+        }
     };
 
     return (
@@ -180,16 +220,27 @@ const CartDrawer = () => {
                         {/* Footer */}
                         {cart.length > 0 && (
                             <div className="p-4 bg-white border-t border-gray-100 pb-8">
+                                <div className="mb-4">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-1">Nombre del Cliente *</label>
+                                    <input 
+                                        type="text" 
+                                        value={clientName}
+                                        onChange={(e) => setClientName(e.target.value)}
+                                        placeholder="Ej: Juan Pérez"
+                                        className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-green-light outline-none"
+                                    />
+                                </div>
                                 <div className="flex items-center justify-between mb-4">
                                     <span className="text-gray-500">Total Estimado</span>
                                     <span className="text-2xl font-bold text-gray-900">${total.toFixed(2)}</span>
                                 </div>
                                 <button
                                     onClick={handleCheckout}
-                                    className="w-full bg-brand-green-dark text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-green-dark/20 hover:bg-opacity-90 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group"
+                                    disabled={cart.length === 0 || isCheckingOut}
+                                    className="w-full bg-brand-green-dark text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-green-dark/20 hover:bg-opacity-90 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    <span>Finalizar Pedido en WhatsApp</span>
-                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                    <span>{isCheckingOut ? 'Procesando...' : 'Procesar Orden y WhatsApp'}</span>
+                                    {!isCheckingOut && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
                                 </button>
                             </div>
                         )}
