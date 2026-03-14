@@ -1,22 +1,17 @@
-Proyecto: Renovapet Zulia (Tienda de Mascotas PWA)
-Módulo: III (Programación Back-End)
-Participante: (Tu Nombre Aquí / Equipo de Trabajo)
-Actividad: 1 - Desarrollo de Base de Datos y CRUD (Conexiones Backend)
+DATOS DEL PARTICIPANTE:
+Nombre: Cristian Ernesto
+Apellido: Chirinos Flores
+Cédula: 31.408.911
+Título del Proyecto: Sistema Web Progresivo (PWA) de Gestión de Inventario - Renovapet Zulia
 
-Enlace del Repositorio (GitHub): https://github.com/Cerfire/renovapet-zulia
-Enlace de Despliegue en Vivo (Vercel): [En Vercel - Añadir una vez desplegado]
-Enlace de Video Defensa (YouTube): [Enlace a YouTube]
+CREDENCIALES DE ACCESO (PRODUCCIÓN):
+URL del sistema: [Pega aquí tu URL de Vercel]
+Usuario Gerente: admin | Clave: 1234
+Usuario Vendedor: vendedor | Clave: 1234
 
-Credenciales de Administrador para revisión interactiva:
-Usuario: admin
-Contraseña: password123
-
-Credenciales de Vendedor VIP:
-Usuario: vendedor
-Contraseña: password123
-
-Detalles del Desarrollo:
-- Se implementaron 8 Tablas relacionadas.
-- Backend en Node.js (Express) para el CRUD a una base MySQL Cloud.
-- Todas las operaciones CRUD listadas en React.js (Inventario, Órdenes, Personal, Registros Maestros).
-- Enfoque total en validaciones extremas para prevenir caídas de aplicación y tipos de datos erróneos.
+FICHA TÉCNICA Y DE COTIZACIÓN (REQUISITO MÓDULO 3):
+- Lenguaje utilizado: JavaScript (React.js en el Frontend, Node.js/Express en el Backend).
+- Manejador de Base de Datos: MySQL 8.0 (Desplegado en Cloud).
+- Entorno de desarrollo: Visual Studio Code, Vite (HMR), Postman (Pruebas API).
+- Entorno de producción y hosting: Vercel (Frontend & Backend Serverless) y Aiven (Database).
+- Precio estimado del desarrollo (Cotización comercial): $1,250 USD (Incluye levantamiento de requerimientos, diseño UI/UX, arquitectura backend de 8 tablas relacionales, desarrollo PWA, validaciones de seguridad extrema y despliegue en la nube).

@@ -87,7 +87,10 @@ CREATE TABLE audit_logs (
 
 INSERT INTO users (username, password_hash, role, avatar) VALUES
 ('admin', '$2b$10$3qoSe0C4/eRVLtVLrdq0bOihLvQQInnOOAewFLQS6RRb/2O9W5Gju', 'Gerente', 'https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff'),
-('vendedor', '$2b$10$yu76SCC81UnYjl1xLf3JHOihvB3m4lahO1XWSD5NrU2gAy2JpvHxi', 'Vendedor', 'https://ui-avatars.com/api/?name=Vendedor&background=random');
+('vendedor', '$2b$10$yu76SCC81UnYjl1xLf3JHOihvB3m4lahO1XWSD5NrU2gAy2JpvHxi', 'Vendedor', 'https://ui-avatars.com/api/?name=Vendedor&background=random'),
+('gerente_ops', '$2b$10$3qoSe0C4/eRVLtVLrdq0bOihLvQQInnOOAewFLQS6RRb/2O9W5Gju', 'Gerente', 'https://ui-avatars.com/api/?name=Gerente+Ops&background=random'),
+('cajero1', '$2b$10$yu76SCC81UnYjl1xLf3JHOihvB3m4lahO1XWSD5NrU2gAy2JpvHxi', 'Vendedor', 'https://ui-avatars.com/api/?name=Cajero+1&background=random'),
+('cajero2', '$2b$10$yu76SCC81UnYjl1xLf3JHOihvB3m4lahO1XWSD5NrU2gAy2JpvHxi', 'Vendedor', 'https://ui-avatars.com/api/?name=Cajero+2&background=random');
 
 INSERT INTO categories (name, description) VALUES
 ('Alimentos', 'Comida seca y húmeda para mascotas'),

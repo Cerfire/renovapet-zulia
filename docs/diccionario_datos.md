@@ -1,125 +1,236 @@
 # Diccionario de Datos - Renovapet Zulia
 
-Este documento describe la estructura relacional de la base de datos de 8 tablas diseñadas para el proyecto Renovapet Zulia (Actividad 1 - Módulo 3).
-
-## 1. Tabla: `users`
-Almacena los administradores y personal de la aplicación.
-- **Índices**: `username` (UNIQUE).
-- **Relaciones**: Ninguna llave foránea entrante. Actúa como tabla maestra para `orders` y `audit_logs`.
-
-| Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
-|----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
-| 1 | id | ID | Identificador único del usuario | INT | 11 | Sí | No | Sí | AUTO_INCREMENT | N/A |
-| 2 | username | Usuario | Nombre de usuario (único) | VARCHAR | 50 | No | No | Sí | Ninguno | N/A |
-| 3 | password_hash | Contraseña | Hash encriptado con bcrypt | VARCHAR | 255 | No | No | Sí | Ninguno | N/A |
-| 4 | role | Rol | Privilegio: Gerente o Vendedor | ENUM | 10 | No | No | Sí | Ninguno | N/A |
-| 5 | avatar | Foto | URL de la imagen de perfil | VARCHAR | 255 | No | No | No | NULL | N/A |
+Este documento describe la estructura relacional de la base de datos de 8 tablas diseñadas para el proyecto Renovapet Zulia (Actividad 1 - Módulo 3), adaptado al formato formal de Diccionario de Datos.
 
 ---
 
-## 2. Tabla: `categories`
-Almacena las categorías maestras para clasificar los productos del inventario.
-- **Índices**: `name` (UNIQUE).
+## 1. Módulo: Autenticación / Personal
+
+**Información General**
+* **Fecha de Creación:** 13/03/2026
+* **Fecha de Modificación:** 13/03/2026
+
+**Información de la Tabla**
+* **Nombre:** `users`
+* **Alias:** Usuarios
+* **Descripción:** Almacena los administradores y personal de la aplicación con sus niveles de acceso (roles).
+
+**Información de lo(s) Campo(s)**
 
 | Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
 |----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
-| 1 | id | ID | Identificador único referencial | INT | 11 | Sí | No | Sí | AUTO_INCREMENT | N/A |
-| 2 | name | Nombre | Nombre de la categoría | VARCHAR | 50 | No | No | Sí | Ninguno | N/A |
-| 3 | description | Reseña | Detalles de la categoría | TEXT | 65535 | No | No | No | NULL | N/A |
-| 4 | created_at | Fecha Creo | Fecha de registro en sistema | TIMESTAMP| - | No | No | No | CURRENT_TIMESTAMP | N/A |
+| 1 | id | ID_USER | Identificador único del usuario | INT | 11 | X | | X | AUTO_INCREMENT | 13/03/2026 |
+| 2 | username | USERNAME | Nombre de usuario de acceso | VARCHAR | 50 | | | X | | 13/03/2026 |
+| 3 | password_hash | PASSWORD | Contraseña encriptada (bcrypt) | VARCHAR | 255 | | | X | | 13/03/2026 |
+| 4 | role | ROL | Nivel de privilegio del sistema | ENUM | 10 | | | X | | 13/03/2026 |
+| 5 | avatar | AVATAR | Enlace de foto de perfil | VARCHAR | 255 | | | | NULL | 13/03/2026 |
+
+**Información Claves Foráneas**
+No aplica para esta tabla.
 
 ---
 
-## 3. Tabla: `suppliers`
-Entidad que registra los proveedores externos de la tienda.
-- **Relaciones**: Los productos pertenecen a un proveedor (`products.supplier_id`).
+## 2. Módulo: Inventario
+
+**Información General**
+* **Fecha de Creación:** 13/03/2026
+* **Fecha de Modificación:** 13/03/2026
+
+**Información de la Tabla**
+* **Nombre:** `categories`
+* **Alias:** Categorías
+* **Descripción:** Almacena los rubros o familias para clasificar los productos del inventario.
+
+**Información de lo(s) Campo(s)**
 
 | Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
 |----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
-| 1 | id | ID | ID correlativo de sistema | INT | 11 | Sí | No | Sí | AUTO_INCREMENT | N/A |
-| 2 | name | Empresa | Nombre comercial | VARCHAR | 100 | No | No | Sí | Ninguno | N/A |
-| 3 | contact_name | Contacto| Persona de enlace comercial | VARCHAR | 100 | No | No | No | NULL | N/A |
-| 4 | phone | Teléfono| Número de contacto principal | VARCHAR | 20 | No | No | No | NULL | N/A |
-| 5 | email | Correo | Correo de negocios | VARCHAR | 100 | No | No | No | NULL | N/A |
-| 6 | address | Dirección| Sede principal de despachos | TEXT | 65535 | No | No | No | NULL | N/A |
-| 7 | created_at | Fecha Creo| Fecha de asociación | TIMESTAMP| - | No | No | No | CURRENT_TIMESTAMP | N/A |
+| 1 | id | ID_CAT | Identificador único referencial | INT | 11 | X | | X | AUTO_INCREMENT | 13/03/2026 |
+| 2 | name | NOMBRE | Nombre de la categoría | VARCHAR | 50 | | | X | | 13/03/2026 |
+| 3 | description | DESCRIPCION | Detalles de la categoría | TEXT | 65535 | | | | NULL | 13/03/2026 |
+| 4 | created_at | FECHA_CREA | Fecha de registro en sistema | TIMESTAMP| - | | | | CURRENT_TIMEST | 13/03/2026 |
+
+**Información Claves Foráneas**
+No aplica para esta tabla.
 
 ---
 
-## 4. Tabla: `customers`
-Agenda de clientes fijos para seguimiento de despachos.
-- **Índices**: `email` (UNIQUE).
+## 3. Módulo: Proveedores
+
+**Información General**
+* **Fecha de Creación:** 13/03/2026
+* **Fecha de Modificación:** 13/03/2026
+
+**Información de la Tabla**
+* **Nombre:** `suppliers`
+* **Alias:** Proveedores
+* **Descripción:** Entidad que registra atributos y vías de contacto de proveedores externos aliados.
+
+**Información de lo(s) Campo(s)**
 
 | Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
 |----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
-| 1 | id | ID | Serial de la base de datos | INT | 11 | Sí | No | Sí | AUTO_INCREMENT | N/A |
-| 2 | first_name | Nombre | Nombre de pila | VARCHAR | 50 | No | No | Sí | Ninguno | N/A |
-| 3 | last_name | Apellido| Apellidos del cliente | VARCHAR | 50 | No | No | Sí | Ninguno | N/A |
-| 4 | email | Correo | Email de facturación único | VARCHAR | 100 | No | No | No | NULL | N/A |
-| 5 | phone | Celular | Teléfono de WhatsApp | VARCHAR | 20 | No | No | No | NULL | N/A |
-| 6 | address | Dirección| Detalles de envío fijo | TEXT | 65535 | No | No | No | NULL | N/A |
-| 7 | created_at | Fecha Creo| Fecha de registro inicial | TIMESTAMP| - | No | No | No | CURRENT_TIMESTAMP | N/A |
+| 1 | id | ID_PROV | ID correlativo de sistema | INT | 11 | X | | X | AUTO_INCREMENT | 13/03/2026 |
+| 2 | name | EMPRESA | Nombre comercial corporativo | VARCHAR | 100 | | | X | | 13/03/2026 |
+| 3 | contact_name | CONTACTO | Persona de enlace comercial | VARCHAR | 100 | | | | NULL | 13/03/2026 |
+| 4 | phone | TELEFONO | Número de contacto principal | VARCHAR | 20 | | | | NULL | 13/03/2026 |
+| 5 | email | CORREO | Correo electrónico de negocios| VARCHAR | 100 | | | | NULL | 13/03/2026 |
+| 6 | address | DIRECCION | Sede física principal | TEXT | 65535 | | | | NULL | 13/03/2026 |
+| 7 | created_at | FECHA_CREA | Marca temporal de asociación | TIMESTAMP| - | | | | CURRENT_TIMEST | 13/03/2026 |
+
+**Información Claves Foráneas**
+No aplica para esta tabla.
 
 ---
 
-## 5. Tabla: `products`
-Núcleo del inventario con control de precios y cantidades.
-- **Relaciones**: Foreing Key a `suppliers(id)`.
+## 4. Módulo: Gestión de Clientes
+
+**Información General**
+* **Fecha de Creación:** 13/03/2026
+* **Fecha de Modificación:** 13/03/2026
+
+**Información de la Tabla**
+* **Nombre:** `customers`
+* **Alias:** Clientes
+* **Descripción:** Base de datos de clientes registrados para vinculación rápida en facturación.
+
+**Información de lo(s) Campo(s)**
 
 | Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
 |----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
-| 1 | id | ID | Primary key de artículos | INT | 11 | Sí | No | Sí | AUTO_INCREMENT | N/A |
-| 2 | name | Producto | Nombre visible en catálogo | VARCHAR | 100 | No | No | Sí | Ninguno | N/A |
-| 3 | price | Precio | Valor monetario en dólares | DECIMAL | 10,2 | No | No | Sí | Ninguno | N/A |
-| 4 | stock | Existencia| Unidades físicas albergadas | INT | 11 | No | No | Sí | 0 | N/A |
-| 5 | category | Rubro | Tipo de producto texto plano | VARCHAR | 50 | No | No | No | NULL | N/A |
-| 6 | is_featured | Destacado| Mostrar en landing page | BOOLEAN | 1 | No | No | No | FALSE | N/A |
-| 7 | description | Detalles | Reseña visible al cliente | TEXT | 65535 | No | No | No | NULL | N/A |
-| 8 | image | Imagen | Base64 o URL referencial | MD_TEXT | 16M | No | No | No | NULL | N/A |
-| 9 | supplier_id | Prov. ID| Referencia a entidad suppliers | INT | 11 | No | Sí | No | NULL | N/A |
+| 1 | id | ID_CLI | Serial de la base de datos | INT | 11 | X | | X | AUTO_INCREMENT | 13/03/2026 |
+| 2 | first_name | NOMBRE | Nombre de pila del cliente | VARCHAR | 50 | | | X | | 13/03/2026 |
+| 3 | last_name | APELLIDO | Apellidos completos | VARCHAR | 50 | | | X | | 13/03/2026 |
+| 4 | email | CORREO | Email único del cliente | VARCHAR | 100 | | | | NULL | 13/03/2026 |
+| 5 | phone | CELULAR | Teléfono móvil de contacto | VARCHAR | 20 | | | | NULL | 13/03/2026 |
+| 6 | address | DIRECCION | Localización predeterminada | TEXT | 65535 | | | | NULL | 13/03/2026 |
+| 7 | created_at | FECHA_CREA | Fecha del registro inicial | TIMESTAMP| - | | | | CURRENT_TIMEST | 13/03/2026 |
+
+**Información Claves Foráneas**
+No aplica para esta tabla.
 
 ---
 
-## 6. Tabla: `orders`
-Cabecera de recibos y facturación por compras generadas.
-- **Relaciones**: Foreign Key a `users(id)`, Foreign Key a `customers(id)`.
+## 5. Módulo: Inventario Principal
+
+**Información General**
+* **Fecha de Creación:** 13/03/2026
+* **Fecha de Modificación:** 13/03/2026
+
+**Información de la Tabla**
+* **Nombre:** `products`
+* **Alias:** Productos
+* **Descripción:** Núcleo central del inventario con detalles, precios, existencias y multimedia.
+
+**Información de lo(s) Campo(s)**
 
 | Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
 |----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
-| 1 | id | N. Orden | Número secuencial del pedido | INT | 11 | Sí | No | Sí | AUTO_INCREMENT | N/A |
-| 2 | client_name | Cliente | Nombre no normalizado trans.| VARCHAR | 100 | No | No | Sí | Ninguno | N/A |
-| 3 | total | Subtotal| Valor absoluto de la compra | DECIMAL | 10,2 | No | No | Sí | Ninguno | N/A |
-| 4 | status | Estatus | Situación de entrega | ENUM | 10 | No | No | No | 'Pendiente' | N/A |
-| 5 | created_at | Emisión | Huella de tiempo automática | TIMESTAMP| - | No | No | No | CURRENT_TIMESTAMP | N/A |
-| 6 | dispatch_info | Ruta | JSON data: dir, telf, met | JSON | - | No | No | No | NULL | N/A |
-| 7 | user_id | Cajero ID| Gerente/Vendedor a cargo | INT | 11 | No | Sí | No | NULL | N/A |
-| 8 | customer_id | Cli. Ref | Enlace a base de datos real | INT | 11 | No | Sí | No | NULL | N/A |
+| 1 | id | ID_PROD | Llave primaria de artículos | INT | 11 | X | | X | AUTO_INCREMENT | 13/03/2026 |
+| 2 | name | PRODUCTO | Denominación del artículo | VARCHAR | 100 | | | X | | 13/03/2026 |
+| 3 | price | PRECIO | Valor unitario comercial | DECIMAL | 10,2 | | | X | | 13/03/2026 |
+| 4 | stock | STOCK | Piezas disponibles físicas | INT | 11 | | | X | 0 | 13/03/2026 |
+| 5 | category | CATEGORIA | Nombre de la categoría | VARCHAR | 50 | | | | NULL | 13/03/2026 |
+| 6 | is_featured | DESTACADO | Marcar para vista en Landing | BOOLEAN | 1 | | | | FALSE | 13/03/2026 |
+| 7 | description | DETALLES | Reseña visible descriptiva | TEXT | 65535 | | | | NULL | 13/03/2026 |
+| 8 | image | IMAGEN | URL o cadena Base64 foto | MD_TEXT | 16M | | | | NULL | 13/03/2026 |
+| 9 | supplier_id | ID_PROV | Referencia clave del proveedor| INT | 11 | | X | | NULL | 13/03/2026 |
+
+**Información Claves Foráneas**
+
+| Nombre Clave | Tabla Foránea | Campo en tabla padre | Campo en tabla foránea |
+|--------------|---------------|----------------------|------------------------|
+| FK_product_supplier | suppliers | supplier_id | id |
 
 ---
 
-## 7. Tabla: `order_items`
-Detalle línea por línea de los productos adscritos a una orden (Relación N a N).
-- **Relaciones**: FK a `orders(id)`, FK a `products(id)`.
+## 6. Módulo: Ventas y Pedidos
+
+**Información General**
+* **Fecha de Creación:** 13/03/2026
+* **Fecha de Modificación:** 13/03/2026
+
+**Información de la Tabla**
+* **Nombre:** `orders`
+* **Alias:** Órdenes (Cabecera)
+* **Descripción:** Cabecera maestra que engloba un pedido realizado, los totales financieros y ruta logística.
+
+**Información de lo(s) Campo(s)**
 
 | Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
 |----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
-| 1 | id | L. Item | Identificador de fila | INT | 11 | Sí | No | Sí | AUTO_INCREMENT | N/A |
-| 2 | order_id | ID Fact.| Cabecera que agrupa al ítem | INT | 11 | No | Sí | Sí | Ninguno | N/A |
-| 3 | product_id| ID Prod.| Ítem sustraído del inventario | INT | 11 | No | Sí | Sí | Ninguno | N/A |
-| 4 | quantity | Cantidad| Multiplicador de sustracción| INT | 11 | No | No | Sí | Ninguno | N/A |
-| 5 | price | Imp. Fila| Valor cobrado estático (Hst.) | DECIMAL | 10,2 | No | No | Sí | Ninguno | N/A |
+| 1 | id | NUM_ORDEN | Número unívoco del pedido | INT | 11 | X | | X | AUTO_INCREMENT | 13/03/2026 |
+| 2 | client_name | NOM_CLIENTE | Texto libre del comprador | VARCHAR | 100 | | | X | | 13/03/2026 |
+| 3 | total | MONTO_TOTAL | Pago global consolidado | DECIMAL | 10,2 | | | X | | 13/03/2026 |
+| 4 | status | ESTATUS | Control de logística actual | ENUM | 10 | | | | 'Pendiente' | 13/03/2026 |
+| 5 | created_at | EMISION | Tiempo de concretar venta | TIMESTAMP| - | | | | CURRENT_TIMEST | 13/03/2026 |
+| 6 | dispatch_info | INFO_RUTA | Estructura JSON con logística| JSON | - | | | | NULL | 13/03/2026 |
+| 7 | user_id | VENDEDOR | Cajero o Gerente emisor | INT | 11 | | X | | NULL | 13/03/2026 |
+| 8 | customer_id | ID_CLI | Cliente fijo asociado | INT | 11 | | X | | NULL | 13/03/2026 |
+
+**Información Claves Foráneas**
+
+| Nombre Clave | Tabla Foránea | Campo en tabla padre | Campo en tabla foránea |
+|--------------|---------------|----------------------|------------------------|
+| FK_order_user | users | user_id | id |
+| FK_order_customer| customers | customer_id | id |
 
 ---
 
-## 8. Tabla: `audit_logs`
-Bitácora estática de trazablidad para capturar CRUDs del sistema.
-- **Relaciones**: FK a `users(id)`.
+## 7. Módulo: Detalle de Ventas
+
+**Información General**
+* **Fecha de Creación:** 13/03/2026
+* **Fecha de Modificación:** 13/03/2026
+
+**Información de la Tabla**
+* **Nombre:** `order_items`
+* **Alias:** Detalles de Orden
+* **Descripción:** Desglose transaccional que entrelaza la orden con los productos sustraídos del inventario.
+
+**Información de lo(s) Campo(s)**
 
 | Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
 |----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
-| 1 | id | ID | Consecutivo de registro | INT | 11 | Sí | No | Sí | AUTO_INCREMENT | N/A |
-| 2 | user_id | Autor ID| Usuario ejecutor del cambio | INT | 11 | No | Sí | No | NULL | N/A |
-| 3 | action | Método | (POST, PUT, DELETE, LOGIN) | VARCHAR | 255 | No | No | Sí | Ninguno | N/A |
-| 4 | table_affected| Entidad | Tabla manipulada | VARCHAR | 255 | No | No | No | NULL | N/A |
-| 5 | details | Log info| JSON del payload modificado | TEXT | 65535 | No | No | No | NULL | N/A |
-| 6 | timestamp | Ejecución| Fecha marca automática exacta | TIMESTAMP| - | No | No | No | CURRENT_TIMESTAMP | N/A |
+| 1 | id | L_ITEM | Serial incrementable fila | INT | 11 | X | | X | AUTO_INCREMENT | 13/03/2026 |
+| 2 | order_id | ID_FACTURA | Raíz de la orden adjudicada | INT | 11 | | X | X | | 13/03/2026 |
+| 3 | product_id| ID_PROD | Identificador artículo movido | INT | 11 | | X | X | | 13/03/2026 |
+| 4 | quantity | CANTIDAD | Multiplicador unitario vendido| INT | 11 | | | X | | 13/03/2026 |
+| 5 | price | IMPORTE | Precio estático transaccional | DECIMAL | 10,2 | | | X | | 13/03/2026 |
+
+**Información Claves Foráneas**
+
+| Nombre Clave | Tabla Foránea | Campo en tabla padre | Campo en tabla foránea |
+|--------------|---------------|----------------------|------------------------|
+| FK_item_order | orders | order_id | id |
+| FK_item_product| products | product_id | id |
+
+---
+
+## 8. Módulo: Sistema y Auditoría
+
+**Información General**
+* **Fecha de Creación:** 13/03/2026
+* **Fecha de Modificación:** 13/03/2026
+
+**Información de la Tabla**
+* **Nombre:** `audit_logs`
+* **Alias:** Bitácora
+* **Descripción:** Observatorio estático inmutable para transacciones, manipulación de CRUDs y eventos globales.
+
+**Información de lo(s) Campo(s)**
+
+| Id | Campo | Alias | Descripción | Tipo | Long. | Primary | Foreign | Not Null | Valor Defecto | Fecha Modificación |
+|----|-------|-------|-------------|------|-------|---------|---------|----------|---------------|--------------------|
+| 1 | id | ID_LOG | Secuencia temporal ordinal | INT | 11 | X | | X | AUTO_INCREMENT | 13/03/2026 |
+| 2 | user_id | ID_RESPONSABEL| Empleado causante del evento | INT | 11 | | X | | NULL | 13/03/2026 |
+| 3 | action | TRANSACCION| Tipificación (POST, PUT, DEL) | VARCHAR | 255 | | | X | | 13/03/2026 |
+| 4 | table_affected| ENTIDAD | Esfera o tabla comprometida | VARCHAR | 255 | | | | NULL | 13/03/2026 |
+| 5 | details | PAYLOAD | Metadatos y JSON del suceso | TEXT | 65535 | | | | NULL | 13/03/2026 |
+| 6 | timestamp | FECHA_HORA | Marca de tiempo automatizada | TIMESTAMP| - | | | | CURRENT_TIMEST | 13/03/2026 |
+
+**Información Claves Foráneas**
+
+| Nombre Clave | Tabla Foránea | Campo en tabla padre | Campo en tabla foránea |
+|--------------|---------------|----------------------|------------------------|
+| FK_audit_user | users | user_id | id |
