@@ -5,8 +5,8 @@ import BottomDock from './BottomDock';
 const MainLayout = ({ children }) => {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-transparent text-gray-900 dark:text-gray-100 font-sans relative selection:bg-brand-green-light/30 transition-colors duration-300">
-            {/* Desktop Navigation */}
-            <div className="hidden md:block sticky top-0 z-50">
+            {/* Navigation - handles its own responsive layout */}
+            <div className="sticky top-0 z-50">
                 <Navbar />
             </div>
 
@@ -17,12 +17,13 @@ const MainLayout = ({ children }) => {
                 </div>
             </main>
 
-            {/* Mobile Navigation */}
+            {/* Mobile Bottom Dock */}
             <div className="md:hidden">
                 <BottomDock />
             </div>
         </div>
     );
 };
+
 
 export default MainLayout;
