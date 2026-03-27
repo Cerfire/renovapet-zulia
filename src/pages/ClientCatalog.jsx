@@ -86,16 +86,17 @@ const ClientCatalog = () => {
             return;
         }
 
-        let message = `¡Hola Renovapet Zulia! 🐾 Soy *${clientName.trim()}*`;
-        if (clientPhone.trim()) message += ` (Tel: ${clientPhone.trim()})`;
-        message += `.%0AQuiero realizar el siguiente pedido:%0A%0A`;
+        let message = `🐾 *¡Hola RenovaPet Zulia!*%0A%0A`;
+        message += `👤 *Cliente:* ${clientName.trim()}%0A`;
+        if (clientPhone.trim()) message += `📱 *Teléfono:* ${clientPhone.trim()}%0A`;
+        message += `%0A🛒 *Mi pedido:*%0A%0A`;
 
-        cart.forEach(item => {
-            message += `• ${item.quantity}x ${item.name} — $${(item.price * item.quantity).toFixed(2)}%0A`;
+        cart.forEach((item, index) => {
+            message += `${index + 1}. 📦 *${item.name}* — Cantidad: ${item.quantity}%0A`;
         });
 
-        message += `%0A*Total: $${cartTotal.toFixed(2)}*%0A`;
-        message += `%0A¿Tienen disponibilidad? ¡Gracias! 🙏`;
+        message += `%0A📝 *Total de productos:* ${cart.reduce((sum, item) => sum + item.quantity, 0)} artículos%0A`;
+        message += `%0A¿Tienen disponibilidad? ¡Quedo atento! 🙏✨`;
 
         // Confetti
         const end = Date.now() + 800;

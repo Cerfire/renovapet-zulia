@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth } from './AuthContext';
+import { useAuth, getAuthHeaders } from './AuthContext';
 
 const CartContext = createContext(null);
 
@@ -105,9 +105,16 @@ export const CartProvider = ({ children }) => {
         try {
             const response = await fetch(`${API_URL}/api/orders`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(orderData)
             });
+
+            if (response.status === 401) {
+                localStorage.removeItem('renovapet_user');
+                localStorage.removeItem('renovapet_token');
+                window.location.href = '/login';
+                return { error: 'Sesión expirada' };
+            }
 
             if (!response.ok) {
                 const err = await response.json();
@@ -133,14 +140,15 @@ export const CartProvider = ({ children }) => {
 
     const generateWhatsAppLink = () => {
         const phoneNumber = "584124383334";
-        let message = "¡Hola Renovapet Zulia! 🐾 Mi pedido es:%0A%0A";
+        let message = `🐾 *¡Hola RenovaPet Zulia!*%0A%0A`;
+        message += `🛒 *Mi pedido:*%0A%0A`;
 
-        cart.forEach(item => {
-            message += `${item.quantity}x ${item.name} ($${item.price})%0A`;
+        cart.forEach((item, index) => {
+            message += `${index + 1}. 📦 *${item.name}* — Cantidad: ${item.quantity}%0A`;
         });
 
-        message += `%0ATotal: $${total.toFixed(2)}%0A`;
-        message += "¿Tienen disponibilidad?";
+        message += `%0A📝 *Total de productos:* ${cart.reduce((sum, item) => sum + item.quantity, 0)} artículos%0A`;
+        message += `%0A¿Tienen disponibilidad? ¡Quedo atento! 🙏✨`;
 
         return `https://wa.me/${phoneNumber}?text=${message}`;
     };

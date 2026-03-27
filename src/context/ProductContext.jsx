@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import initialDesiredProducts from '../data/products.json';
+import { getAuthHeaders, getAuthToken } from './AuthContext';
 
 const ProductContext = createContext(null);
 
@@ -59,13 +60,13 @@ export const ProductProvider = ({ children }) => {
 
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', 'ml_default');
+        formData.append('upload_preset', 'renovapet');
 
         toast.loading('Subiendo imagen...', { id: 'upload-toast' });
 
         try {
-            const cloudName = 'demo';
-            const preset = 'docs_upload_example_us';
+            const cloudName = 'dq2fby6is';
+            const preset = 'renovapet';
 
             const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload?upload_preset=${preset}`, {
                 method: 'POST',
@@ -113,13 +114,16 @@ export const ProductProvider = ({ children }) => {
         try {
             const response = await fetch(`${API_URL}/api/products`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-user-id': getUserId()
-                },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(cleanProductData)
             });
 
+            if (response.status === 401) {
+                localStorage.removeItem('renovapet_user');
+                localStorage.removeItem('renovapet_token');
+                window.location.href = '/login';
+                return;
+            }
             if (!response.ok) throw new Error('Failed to add product');
 
             const newProduct = await response.json();
@@ -149,14 +153,17 @@ export const ProductProvider = ({ children }) => {
         updateLocalState(updatedProducts);
 
         try {
-            await fetch(`${API_URL}/api/products/${id}`, {
+            const res = await fetch(`${API_URL}/api/products/${id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-user-id': getUserId()
-                },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(cleanUpdates)
             });
+            if (res.status === 401) {
+                localStorage.removeItem('renovapet_user');
+                localStorage.removeItem('renovapet_token');
+                window.location.href = '/login';
+                return;
+            }
             toast.success('Producto actualizado en BD');
         } catch (error) {
             console.error("API Error (Update):", error);
@@ -171,10 +178,16 @@ export const ProductProvider = ({ children }) => {
         updateLocalState(filteredProducts);
 
         try {
-            await fetch(`${API_URL}/api/products/${id}`, {
+            const res = await fetch(`${API_URL}/api/products/${id}`, {
                 method: 'DELETE',
-                headers: { 'x-user-id': getUserId() }
+                headers: { 'Authorization': `Bearer ${getAuthToken()}` }
             });
+            if (res.status === 401) {
+                localStorage.removeItem('renovapet_user');
+                localStorage.removeItem('renovapet_token');
+                window.location.href = '/login';
+                return;
+            }
             toast.success('Producto eliminado de BD');
         } catch (error) {
             console.error("API Error (Delete):", error);

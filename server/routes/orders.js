@@ -45,6 +45,29 @@ router.post('/', validateOrder, audit('CREATE', 'orders'), async (req, res) => {
     try {
         await connection.beginTransaction();
 
+        // Validate stock availability with row-level locking (FOR UPDATE)
+        for (const item of items) {
+            const [rows] = await connection.query(
+                'SELECT stock, name FROM products WHERE id = ? FOR UPDATE',
+                [item.product_id]
+            );
+
+            if (rows.length === 0) {
+                await connection.rollback();
+                return res.status(400).json({
+                    error: `Producto con ID ${item.product_id} no encontrado.`
+                });
+            }
+
+            const product = rows[0];
+            if (product.stock < item.quantity) {
+                await connection.rollback();
+                return res.status(400).json({
+                    error: `Stock insuficiente para "${product.name}". Disponible: ${product.stock}, Solicitado: ${item.quantity}`
+                });
+            }
+        }
+
         const [orderResult] = await connection.query(
             'INSERT INTO orders (user_id, client_name, total, dispatch_info) VALUES (?, ?, ?, ?)',
             [user_id, client_name, total, JSON.stringify(dispatch_info)]
@@ -58,7 +81,7 @@ router.post('/', validateOrder, audit('CREATE', 'orders'), async (req, res) => {
                 [orderId, item.product_id, item.quantity, item.price]
             );
 
-            // Update stock
+            // Update stock (already validated above with FOR UPDATE lock)
             await connection.query(
                 'UPDATE products SET stock = stock - ? WHERE id = ?',
                 [item.quantity, item.product_id]

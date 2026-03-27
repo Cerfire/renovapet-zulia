@@ -24,25 +24,29 @@ app.get('/api/health', (req, res) => {
 const productsRoutes = require('./routes/products');
 const ordersRoutes = require('./routes/orders');
 const authRoutes = require('./routes/auth');
-const dashboardRoutes = require('./routes/dashboard'); // Import
+const dashboardRoutes = require('./routes/dashboard');
 const auditRoutes = require('./routes/audit');
 const usersRoutes = require('./routes/users');
 const categoriesRoutes = require('./routes/categories');
 const suppliersRoutes = require('./routes/suppliers');
 const customersRoutes = require('./routes/customers');
+const authMiddleware = require('./middleware/authMiddleware');
 
-app.use('/api/products', productsRoutes);
-app.use('/api/orders', ordersRoutes);
+// Public routes (no JWT required)
 app.use('/api/auth', authRoutes);
-app.use('/api/dashboard', dashboardRoutes); // Use
-app.use('/api/audit', auditRoutes);
-app.use('/api/users', usersRoutes);
-app.use('/api/categories', categoriesRoutes);
-app.use('/api/suppliers', suppliersRoutes);
-app.use('/api/customers', customersRoutes);
+app.use('/api/products', productsRoutes); // GET is public for /tienda storefront; POST/PUT/DELETE are protected inside the router
 
-// Admin: Reset Data Endpoint
-app.delete('/api/admin/reset', async (req, res) => {
+// Protected routes (JWT required)
+app.use('/api/orders', authMiddleware, ordersRoutes);
+app.use('/api/dashboard', authMiddleware, dashboardRoutes);
+app.use('/api/audit', authMiddleware, auditRoutes);
+app.use('/api/users', authMiddleware, usersRoutes);
+app.use('/api/categories', authMiddleware, categoriesRoutes);
+app.use('/api/suppliers', authMiddleware, suppliersRoutes);
+app.use('/api/customers', authMiddleware, customersRoutes);
+
+// Admin: Reset Data Endpoint (protected)
+app.delete('/api/admin/reset', authMiddleware, async (req, res) => {
     const db = require('./config/db');
     const { type } = req.body;
 

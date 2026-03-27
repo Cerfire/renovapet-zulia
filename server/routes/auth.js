@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'renovapet_dev_fallback_secret_2026';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '8h';
 
 // POST /login
 router.post('/login', async (req, res) => {
@@ -29,9 +33,14 @@ router.post('/login', async (req, res) => {
         // Return user info without password
         const { password_hash, ...userInfo } = user;
 
-        // In a real app, we would generate a token here.
-        // For now, we return the user info for the frontend to store.
-        res.json(userInfo);
+        // Generate JWT token
+        const token = jwt.sign(
+            { id: user.id, username: user.username, role: user.role },
+            JWT_SECRET,
+            { expiresIn: JWT_EXPIRES_IN }
+        );
+
+        res.json({ token, user: userInfo });
 
     } catch (error) {
         console.error('Login error:', error);

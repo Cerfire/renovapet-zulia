@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, getAuthHeaders, getAuthToken } from '../context/AuthContext';
 import { Search, Plus, Edit2, Trash2, Shield, User as UserIcon, Lock, Unlock } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -19,7 +19,10 @@ const Users = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users`, {
+                headers: { 'Authorization': `Bearer ${getAuthToken()}` }
+            });
+            if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
             if (res.ok) {
                 const data = await res.json();
                 setUsersList(data);
@@ -43,7 +46,8 @@ const Users = () => {
     const handleDelete = async (id) => {
         if (window.confirm('¿Eliminar este usuario permanentemente?')) {
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${getAuthToken()}` } });
+                if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
                 if (res.ok) {
                     toast.success('Usuario eliminado');
                     fetchUsers();
@@ -72,9 +76,10 @@ const Users = () => {
             try {
                 const res = await fetch(`${import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : '')}/api/users/${userToToggle.id}/status`, {
                     method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify({ is_active: newStatus })
                 });
+                if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
 
                 if (res.ok) {
                     toast.success(`Cuenta ${newStatus ? 'activada' : 'suspendida'} exitosamente`);
@@ -114,9 +119,10 @@ const Users = () => {
         try {
             const res = await fetch(url, {
                 method,
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(formData)
             });
+            if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
 
             const data = await res.json();
 

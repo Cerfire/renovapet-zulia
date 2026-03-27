@@ -2,7 +2,7 @@ import React from 'react';
 import { MessageCircle } from 'lucide-react';
 
 const WhatsAppFloat = () => {
-    const phoneNumber = "584120000000"; // Support number
+    const phoneNumber = "584124383334"; // RenovaPet Zulia
     const message = "Hola, necesito soporte técnico o tengo una duda sobre un producto.";
     const link = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 

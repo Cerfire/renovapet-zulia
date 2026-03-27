@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, getAuthHeaders, getAuthToken } from '../context/AuthContext';
 import { Search, Plus, Edit2, Trash2, Database, Layers, Truck, Users as UsersIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -26,7 +26,10 @@ const Entities = () => {
 
     const fetchData = async () => {
         try {
-            const res = await fetch(getApiEndpoint());
+            const res = await fetch(getApiEndpoint(), {
+                headers: { 'Authorization': `Bearer ${getAuthToken()}` }
+            });
+            if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
             if (res.ok) {
                 const list = await res.json();
                 setData(list);
@@ -52,7 +55,8 @@ const Entities = () => {
     const handleDelete = async (id) => {
         if (window.confirm('¿Eliminar este registro permanentemente?')) {
             try {
-                const res = await fetch(`${getApiEndpoint()}/${id}`, { method: 'DELETE' });
+                const res = await fetch(`${getApiEndpoint()}/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${getAuthToken()}` } });
+                if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
                 if (res.ok) {
                     toast.success('Registro eliminado');
                     fetchData();
@@ -75,9 +79,10 @@ const Entities = () => {
         try {
             const res = await fetch(url, {
                 method,
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(formData)
             });
+            if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
 
             const responseData = await res.json();
 

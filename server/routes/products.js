@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 const audit = require('../middleware/audit');
+const authMiddleware = require('../middleware/authMiddleware');
 
 const { body, validationResult } = require('express-validator');
 
@@ -30,7 +31,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST create product
-router.post('/', validateProduct, audit('CREATE', 'products'), async (req, res) => {
+router.post('/', authMiddleware, validateProduct, audit('CREATE', 'products'), async (req, res) => {
     const { name, description, price, stock, image, is_featured } = req.body;
     try {
         const [result] = await db.query(
@@ -44,7 +45,7 @@ router.post('/', validateProduct, audit('CREATE', 'products'), async (req, res) 
 });
 
 // PUT update product
-router.put('/:id', validateProduct, audit('UPDATE', 'products'), async (req, res) => {
+router.put('/:id', authMiddleware, validateProduct, audit('UPDATE', 'products'), async (req, res) => {
     const { id } = req.params;
     const { name, description, price, stock, image, is_featured } = req.body;
     try {
@@ -59,7 +60,7 @@ router.put('/:id', validateProduct, audit('UPDATE', 'products'), async (req, res
 });
 
 // DELETE delete product
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', authMiddleware, async (req, res, next) => {
     const { id } = req.params;
     try {
         // Fetch product name before deleting for audit logs

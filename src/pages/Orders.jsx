@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Printer, Check, Clock, Package, Download, Edit2, X, Save, FileText } from 'lucide-react';
 import { toast } from 'sonner';
+import { getAuthHeaders, getAuthToken } from '../context/AuthContext';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -169,7 +170,10 @@ const Orders = () => {
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch(`${API_URL}/api/orders`);
+            const response = await fetch(`${API_URL}/api/orders`, {
+                headers: { 'Authorization': `Bearer ${getAuthToken()}` }
+            });
+            if (response.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
             if (!response.ok) throw new Error('Error al cargar órdenes');
             const data = await response.json();
             setOrders(data);
@@ -188,8 +192,10 @@ const Orders = () => {
     const handleDispatch = async (id) => {
         try {
             const response = await fetch(`${API_URL}/api/orders/${id}/dispatch`, {
-                method: 'PUT'
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${getAuthToken()}` }
             });
+            if (response.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
             if (!response.ok) throw new Error('Error al despachar');
 
             toast.success('Orden marcada como despachada');
@@ -209,9 +215,10 @@ const Orders = () => {
         try {
             const response = await fetch(`${API_URL}/api/orders/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(updatedData)
             });
+            if (response.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
 
             if (!response.ok) throw new Error('Error al actualizar');
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, getAuthHeaders, getAuthToken } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldAlert, AlertTriangle, Trash2, Database, Activity, User, Clock, ArrowRight, Settings } from 'lucide-react';
 import { toast } from 'sonner';
@@ -33,7 +33,10 @@ const Bitacora = () => {
 
     const fetchLogs = async () => {
         try {
-            const res = await fetch(`${API_URL}/api/audit`);
+            const res = await fetch(`${API_URL}/api/audit`, {
+                headers: { 'Authorization': `Bearer ${getAuthToken()}` }
+            });
+            if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
             if (res.ok) {
                 const data = await res.json();
                 setLogs(data);
@@ -55,9 +58,10 @@ const Bitacora = () => {
         try {
             const res = await fetch(`${API_URL}/api/admin/reset`, {
                 method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ type })
             });
+            if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
             const data = await res.json();
 
             if (res.ok) {

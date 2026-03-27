@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-import { useAuth } from '../context/AuthContext';
+import { useAuth, getAuthHeaders, getAuthToken } from '../context/AuthContext';
 import { toast } from 'sonner';
 
 const Dashboard = () => {
@@ -21,7 +21,10 @@ const Dashboard = () => {
     const fetchStats = async () => {
         try {
             const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`);
-            const res = await fetch(`${API_URL}/api/dashboard`);
+            const res = await fetch(`${API_URL}/api/dashboard`, {
+                headers: { 'Authorization': `Bearer ${getAuthToken()}` }
+            });
+            if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
             if (!res.ok) throw new Error('Failed to fetch stats');
             const data = await res.json();
             setStats(data);
@@ -41,7 +44,8 @@ const Dashboard = () => {
 
         try {
             const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === 'localhost' ? 'http://localhost:5000' : `http://${window.location.hostname}:5000`);
-            const res = await fetch(`${API_URL}/api/admin/reset`, { method: 'DELETE' });
+            const res = await fetch(`${API_URL}/api/admin/reset`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${getAuthToken()}` } });
+            if (res.status === 401) { localStorage.removeItem('renovapet_user'); localStorage.removeItem('renovapet_token'); window.location.href = '/login'; return; }
             if (!res.ok) throw new Error('Error en el servidor');
             toast.success('Historial reiniciado.');
             fetchStats(); // Update UI without reload
