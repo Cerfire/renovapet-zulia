@@ -81,6 +81,9 @@ router.delete('/:id', authMiddleware, async (req, res, next) => {
         await db.query('DELETE FROM products WHERE id = ?', [id]);
         res.json({ message: 'Product deleted', id });
     } catch (error) {
+        if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+             return res.status(400).json({ error: 'No se puede eliminar un producto que ya tiene pedidos o registros asociados.' });
+        }
         res.status(500).json({ error: error.message });
     }
 });

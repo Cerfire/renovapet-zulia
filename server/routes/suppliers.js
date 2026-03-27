@@ -49,6 +49,9 @@ router.delete('/:id', async (req, res) => {
         if (result.affectedRows === 0) return res.status(404).json({ error: 'No encontrado' });
         res.json({ message: 'Eliminado correctamente' });
     } catch (error) {
+        if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+             return res.status(400).json({ error: 'No se puede eliminar un proveedor que depara productos registrados.' });
+        }
         res.status(500).json({ error: 'Error del servidor' });
     }
 });
