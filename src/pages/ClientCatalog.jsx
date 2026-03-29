@@ -99,12 +99,17 @@ const ClientCatalog = () => {
         message += `%0A📝 *Total de productos:* ${cart.reduce((sum, item) => sum + item.quantity, 0)} artículos%0A`;
         message += `%0A¿Tienen disponibilidad? ¡Quedo atento! 🙏✨`;
 
-        // Confetti
-        const end = Date.now() + 800;
-        const colors = ['#006644', '#FF5F1F', '#ffffff'];
+        // Confetti Dramático 🎉
+        const duration = 3000;
+        const end = Date.now() + duration;
+        const colors = ['#006644', '#FF5F1F', '#ffffff', '#FFD700', '#FF1493', '#00BFFF'];
+        
+        // Disparo inicial gigante al centro
+        confetti({ particleCount: 150, spread: 180, origin: { y: 0.6 }, colors });
+
         (function frame() {
-            confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors });
-            confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors });
+            confetti({ particleCount: 15, angle: 60, spread: 80, origin: { x: 0, y: 0.8 }, colors });
+            confetti({ particleCount: 15, angle: 120, spread: 80, origin: { x: 1, y: 0.8 }, colors });
             if (Date.now() < end) requestAnimationFrame(frame);
         }());
 
