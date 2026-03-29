@@ -100,16 +100,17 @@ const ClientCatalog = () => {
         message += `%0A¿Tienen disponibilidad? ¡Quedo atento! 🙏✨`;
 
         // Confetti Dramático 🎉
-        const duration = 3000;
+        const isMobile = window.innerWidth < 768;
+        const duration = isMobile ? 6000 : 3000; // 6 segundos en móviles
         const end = Date.now() + duration;
         const colors = ['#006644', '#FF5F1F', '#ffffff', '#FFD700', '#FF1493', '#00BFFF'];
         
-        // Disparo inicial gigante al centro
-        confetti({ particleCount: 150, spread: 180, origin: { y: 0.6 }, colors });
+        // Disparo inicial gigante al centro (aún más fuerte en móviles)
+        confetti({ particleCount: isMobile ? 300 : 150, spread: 180, origin: { y: 0.6 }, colors });
 
         (function frame() {
-            confetti({ particleCount: 15, angle: 60, spread: 80, origin: { x: 0, y: 0.8 }, colors });
-            confetti({ particleCount: 15, angle: 120, spread: 80, origin: { x: 1, y: 0.8 }, colors });
+            confetti({ particleCount: isMobile ? 25 : 15, angle: 60, spread: 80, origin: { x: 0, y: 0.8 }, colors });
+            confetti({ particleCount: isMobile ? 25 : 15, angle: 120, spread: 80, origin: { x: 1, y: 0.8 }, colors });
             if (Date.now() < end) requestAnimationFrame(frame);
         }());
 
