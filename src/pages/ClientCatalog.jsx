@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, ShoppingCart, Plus, Minus, X, Trash2, Send, Package, ArrowRight } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import Image from '../components/Image';
+import HeroCarousel from '../components/HeroCarousel';
 
 const PHONE_NUMBER = "584124383334";
 
@@ -161,6 +162,8 @@ const ClientCatalog = () => {
                     <p className="text-green-100 text-sm md:text-base">Encuentra lo mejor para tu mascota. ¡Haz tu pedido por WhatsApp!</p>
                 </div>
             </div>
+
+            <HeroCarousel />
 
             {/* Search + Filters */}
             <div className="max-w-7xl mx-auto px-4 py-6">
